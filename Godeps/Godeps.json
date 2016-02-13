@@ -1,0 +1,25 @@
+{
+	"ImportPath": "github.com/xchapter7x/chaos-peddler",
+	"GoVersion": "go1.3.1",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "1c83b3eabd45b6d76072b66b746c20815fb2872d"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Rev": "26a6070f849969ba72b72256e9f14cf519751690"
+		},
+		{
+			"ImportPath": "github.com/pivotal-cf/brokerapi",
+			"Rev": "4e5eff796f401f6188371ecc37311e579113483d"
+		},
+		{
+			"ImportPath": "github.com/pivotal-golang/lager",
+			"Rev": "95b2ada4cdf781bdcf07e5207879e034ac8c5314"
+		}
+	]
+}
