@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gronpipmaster/mgodb"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/pivotal-golang/lager"
 
@@ -11,14 +12,15 @@ import (
 )
 
 func main() {
-	serviceBroker := &chaospeddler.ServiceBroker{}
+	chaos := new(chaospeddler.ServiceBroker)
 	logger := lager.NewLogger("chaos-peddler-servicebroker")
 	credentials := brokerapi.BrokerCredentials{
 		Username: "username",
 		Password: "password",
 	}
-
-	brokerAPI := brokerapi.New(serviceBroker, logger, credentials)
+	var dbm *mgodb.Dbm
+	_ = dbm.Init("connectUrl", "dbName", 10)
+	brokerAPI := brokerapi.New(chaos, logger, credentials)
 	http.Handle("/", brokerAPI)
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
