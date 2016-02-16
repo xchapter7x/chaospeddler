@@ -10,6 +10,18 @@ import (
 
 //ServiceBroker - this is the struct containing chaos peddler logic
 type ServiceBroker struct {
+	Orchestrator
+}
+
+//Orchestrator - it's chaos but it's organized. implement this interface to
+//run the chaos show.
+type Orchestrator interface {
+	Start()
+}
+
+//Maestro - implements the chaosOrchestrater interface for real use in the
+//service
+type Maestro struct {
 }
 
 //BaseBrokerModel - base struct describing a model to extend
