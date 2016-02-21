@@ -5,7 +5,7 @@ import "github.com/pivotal-cf/brokerapi"
 //Services - returns out chaos peddler service meta data.
 func (*ServiceBroker) Services() (services []brokerapi.Service) {
 	services = append(services, brokerapi.Service{
-		ID:            "e6fcd6aa-047e-42be-bcfc-c8a2b426d707",
+		ID:            ChaosPeddlerServiceID,
 		Name:          "Chaos-Peddler",
 		Description:   "Use the chaos peddler and have AIs randomly killed",
 		Bindable:      true,
@@ -26,7 +26,7 @@ func (*ServiceBroker) Services() (services []brokerapi.Service) {
 func getCrazyChaosPlan() brokerapi.ServicePlan {
 	free := true
 	return brokerapi.ServicePlan{
-		ID:          "f5b828db-dd86-4223-a190-628626c46585",
+		ID:          CrazyChaosPlanID,
 		Name:        "Crazy-Chaos",
 		Description: "high frequency of AI killing, w/ high percentage of total AI count",
 		Free:        &free,
@@ -37,7 +37,7 @@ func getCrazyChaosPlan() brokerapi.ServicePlan {
 func getAnnoyingChaosPlan() brokerapi.ServicePlan {
 	free := true
 	return brokerapi.ServicePlan{
-		ID:          "f3c31f5d-e14f-4c69-a67a-9894a58fa417",
+		ID:          AnnoyingChaosPlanID,
 		Name:        "Just-Annoying-Chaos",
 		Description: "high frequency of AI killing, w/ low percentage of total AI count",
 		Free:        &free,
@@ -48,7 +48,7 @@ func getAnnoyingChaosPlan() brokerapi.ServicePlan {
 func getMickeyMouseChaosPlan() brokerapi.ServicePlan {
 	free := true
 	return brokerapi.ServicePlan{
-		ID:          "0bd1dee2-ea35-4088-bf11-019cd0947fff",
+		ID:          MickeyMouseChaosPlanID,
 		Name:        "Mickey-Mouse-Chaos",
 		Description: "lower frequency of AI killing, w/ lo percentage of total AI count ",
 		Free:        &free,
@@ -59,7 +59,7 @@ func getMickeyMouseChaosPlan() brokerapi.ServicePlan {
 func getNoChaosPlan() brokerapi.ServicePlan {
 	free := false
 	return brokerapi.ServicePlan{
-		ID:          "10eeaa82-2193-4a59-84b2-0340cfdd9e43",
+		ID:          NoChaosPlanID,
 		Name:        "Where-Is-The-Chaos?",
 		Description: "No chaos, no killing of AIs",
 		Free:        &free,

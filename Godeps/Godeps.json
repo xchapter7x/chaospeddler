@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/xchapter7x/chaospeddler",
-	"GoVersion": "go1.5.3",
+	"GoVersion": "go1.4.2",
 	"Packages": [
 		"./..."
 	],
@@ -19,16 +19,6 @@
 			"Rev": "5912458756160bf74e5ef5c5ec4c24c8fbed2ac0"
 		},
 		{
-			"ImportPath": "github.com/onsi/ginkgo",
-			"Comment": "v1.1.0-21-g4e965bd",
-			"Rev": "4e965bd136569a9db429768a24b5789b473c8e31"
-		},
-		{
-			"ImportPath": "github.com/onsi/gomega",
-			"Comment": "v1.0-22-g91ddcd2",
-			"Rev": "91ddcd2375dd05fecea5eabf7a8f86332de756f4"
-		},
-		{
 			"ImportPath": "github.com/op/go-logging",
 			"Comment": "v1-3-gf9dfb79",
 			"Rev": "f9dfb79d4f4eb950e6bb3ca5660e3c31cac8f02c"
@@ -45,6 +35,10 @@
 			"ImportPath": "github.com/robfig/cron",
 			"Comment": "v1-7-g32d9c27",
 			"Rev": "32d9c273155a0506d27cf73dd1246e86a470997e"
+		},
+		{
+			"ImportPath": "github.com/xchapter7x/cloudcontroller-client",
+			"Rev": "27896811a22849ade4d3b738fd2d41e8a2b61407"
 		},
 		{
 			"ImportPath": "github.com/xchapter7x/lo",

@@ -12,14 +12,12 @@ func (s *ServiceBinding) SetBindingID(id string) {
 	s.BindingID = id
 }
 
-//SetUnbindDetails - setter
-func (s *ServiceBinding) SetUnbindDetails(dt brokerapi.UnbindDetails) {
-	s.UnbindDetails = dt
-}
-
 //SetBindDetails - setter
 func (s *ServiceBinding) SetBindDetails(dt brokerapi.BindDetails) {
-	s.BindDetails = dt
+	s.AppGUID = dt.AppGUID
+	s.PlanID = dt.PlanID
+	s.ServiceID = dt.ServiceID
+	s.Parameters = dt.Parameters
 }
 
 //SetActive - setter

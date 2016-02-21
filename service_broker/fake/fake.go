@@ -1,8 +1,10 @@
 package fake
 
 import (
+	"fmt"
 	"sync/atomic"
 
+	"github.com/gronpipmaster/mgodb"
 	"github.com/xchapter7x/chaospeddler/service_broker"
 	"github.com/xchapter7x/lo"
 )
@@ -24,13 +26,17 @@ func (s *BaseService) NewServiceBinding(setID bool) chaospeddler.BindingProvisio
 	model := new(serviceBinding)
 	model.ErrFake = s.ErrFake
 	model.SaveCount = s.SaveCount
+	model.DocsAssignment = s.DocsAssignment
+	model.FakeQueryResponse = s.FakeQueryResponse
 	return model
 }
 
 //BaseService ---
 type BaseService struct {
-	ErrFake   error
-	SaveCount *uint64
+	ErrFake           error
+	SaveCount         *uint64
+	FakeQueryResponse interface{}
+	DocsAssignment    func(interface{}, interface{})
 }
 
 type serviceBinding struct {
@@ -47,4 +53,34 @@ func (s *BaseService) Save() error {
 	lo.G.Debug("calling save on fake", s.SaveCount)
 	atomic.AddUint64(s.SaveCount, 1)
 	return s.ErrFake
+}
+
+//FindAll ---
+func (s *BaseService) FindAll(query mgodb.Query, docs interface{}) (err error) {
+	lo.G.Debug("calling FindAll fake", docs, s.FakeQueryResponse)
+	s.DocsAssignment(docs, s.FakeQueryResponse)
+	return
+}
+
+func ServiceBindingDocsAssignment(dst interface{}, src interface{}) {
+	var dst_tmp []chaospeddler.ServiceBinding
+	for _, v := range src.([]chaospeddler.ServiceBinding) {
+		dst_tmp = append(dst_tmp, v)
+	}
+	*(dst.(*[]chaospeddler.ServiceBinding)) = dst_tmp
+}
+
+func GenerateQueryResponse() []chaospeddler.ServiceBinding {
+	var res []chaospeddler.ServiceBinding
+
+	for i := 0; i < 100; i++ {
+
+		res = append(res, chaospeddler.ServiceBinding{
+			BaseBrokerModel: chaospeddler.BaseBrokerModel{
+				InstanceID: fmt.Sprintf("randominstance-%v", i),
+			},
+			BindingID: fmt.Sprintf("something-binding-%v", i),
+		})
+	}
+	return res
 }

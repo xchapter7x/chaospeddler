@@ -7,14 +7,13 @@ func (s *ServiceInstance) SetInstanceID(id string) {
 	s.InstanceID = id
 }
 
-//SetDeprovisionDetails - setter
-func (s *ServiceInstance) SetDeprovisionDetails(dt brokerapi.DeprovisionDetails) {
-	s.DeprovisionDetails = dt
-}
-
 //SetProvisionDetails - setter
 func (s *ServiceInstance) SetProvisionDetails(dt brokerapi.ProvisionDetails) {
-	s.ProvisionDetails = dt
+	s.PlanID = dt.PlanID
+	s.OrganizationGUID = dt.OrganizationGUID
+	s.SpaceGUID = dt.SpaceGUID
+	s.Parameters = dt.Parameters
+	s.ServiceID = dt.ServiceID
 }
 
 //SetActive - setter

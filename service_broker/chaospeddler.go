@@ -40,7 +40,6 @@ func (*ServiceBroker) Deprovision(instanceID string, details brokerapi.Deprovisi
 	serviceInstance.SetInstanceID(instanceID)
 	serviceInstance.FindOne(serviceInstance, &serviceInstance)
 	serviceInstance.ReloadDoc(serviceInstance)
-	serviceInstance.SetDeprovisionDetails(details)
 	serviceInstance.SetActive(false)
 	err := serviceInstance.Save()
 	return false, err
@@ -66,7 +65,6 @@ func (*ServiceBroker) Unbind(instanceID, bindingID string, details brokerapi.Unb
 	serviceBinding.SetBindingID(bindingID)
 	serviceBinding.FindOne(serviceBinding, &serviceBinding)
 	serviceBinding.ReloadDoc(serviceBinding)
-	serviceBinding.SetUnbindDetails(details)
 	serviceBinding.SetActive(false)
 	err := serviceBinding.Save()
 	return err

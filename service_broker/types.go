@@ -5,6 +5,7 @@ import (
 
 	"github.com/gronpipmaster/mgodb"
 	"github.com/pivotal-cf/brokerapi"
+	"github.com/xchapter7x/cloudcontroller-client"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -22,6 +23,17 @@ type Orchestrator interface {
 //Maestro - implements the chaosOrchestrater interface for real use in the
 //service
 type Maestro struct {
+	AppKiller AppInstanceKiller
+}
+
+//AppInstanceKiller - an interface which kills app instances
+type AppInstanceKiller interface {
+	KillPercent(ServiceBinding, int) error
+}
+
+//AppKill - implements AppInstanceKiller to kill apps
+type AppKill struct {
+	CloudController *ccclient.Client
 }
 
 //BaseBrokerModel - base struct describing a model to extend
@@ -36,21 +48,27 @@ type BaseBrokerModel struct {
 
 //ServiceInstance - model to persist service instance information
 type ServiceInstance struct {
-	brokerapi.ProvisionDetails
-	brokerapi.DeprovisionDetails
+	ServiceID        string                 `json:"service_id"`
+	PlanID           string                 `json:"plan_id"`
+	OrganizationGUID string                 `json:"organization_guid"`
+	SpaceGUID        string                 `json:"space_guid"`
+	Parameters       map[string]interface{} `json:"parameters,omitempty"`
 	BaseBrokerModel
 }
 
 //ServiceBinding - model to persist service binding information
 type ServiceBinding struct {
-	brokerapi.BindDetails
-	brokerapi.UnbindDetails
 	BaseBrokerModel
-	BindingID string `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
+	AppGUID    string                 `json:"app_guid"`
+	PlanID     string                 `json:"plan_id"`
+	ServiceID  string                 `json:"service_id"`
+	Parameters map[string]interface{} `json:"parameters,omitempty"`
+	BindingID  string                 `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
 }
 
 type mongoModeler interface {
 	Save() error
+	FindAll(query mgodb.Query, docs interface{}) (err error)
 	FindOne(queryDoc interface{}, doc interface{}) (err error)
 	ReloadDoc(doc interface{})
 }
@@ -62,7 +80,6 @@ type BindingProvisioner interface {
 	SetInstanceID(string)
 	SetBindingID(string)
 	SetBindDetails(brokerapi.BindDetails)
-	SetUnbindDetails(brokerapi.UnbindDetails)
 	SetActive(bool)
 }
 
@@ -72,6 +89,5 @@ type InstanceProvisioner interface {
 	mongoModeler
 	SetInstanceID(string)
 	SetProvisionDetails(brokerapi.ProvisionDetails)
-	SetDeprovisionDetails(brokerapi.DeprovisionDetails)
 	SetActive(bool)
 }
