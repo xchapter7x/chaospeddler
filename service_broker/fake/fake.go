@@ -62,14 +62,16 @@ func (s *BaseService) FindAll(query mgodb.Query, docs interface{}) (err error) {
 	return
 }
 
+//ServiceBindingDocsAssignment ----
 func ServiceBindingDocsAssignment(dst interface{}, src interface{}) {
-	var dst_tmp []chaospeddler.ServiceBinding
+	var dstTmp []chaospeddler.ServiceBinding
 	for _, v := range src.([]chaospeddler.ServiceBinding) {
-		dst_tmp = append(dst_tmp, v)
+		dstTmp = append(dstTmp, v)
 	}
-	*(dst.(*[]chaospeddler.ServiceBinding)) = dst_tmp
+	*(dst.(*[]chaospeddler.ServiceBinding)) = dstTmp
 }
 
+//GenerateQueryResponse ---
 func GenerateQueryResponse() []chaospeddler.ServiceBinding {
 	var res []chaospeddler.ServiceBinding
 

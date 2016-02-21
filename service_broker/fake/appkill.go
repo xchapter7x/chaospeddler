@@ -6,8 +6,9 @@ import (
 	"github.com/xchapter7x/chaospeddler/service_broker"
 )
 
+//NewAppKill ----
 func NewAppKill(e error) *AppKill {
-	var kc uint64 = 0
+	var kc uint64
 	return &AppKill{
 		KillCounter:    &kc,
 		ErrKillPercent: e,
