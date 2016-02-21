@@ -5,6 +5,7 @@ import (
 
 	"github.com/gronpipmaster/mgodb"
 	"github.com/pivotal-cf/brokerapi"
+	"github.com/xchapter7x/cloudcontroller-client"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -32,7 +33,7 @@ type AppInstanceKiller interface {
 
 //AppKill - implements AppInstanceKiller to kill apps
 type AppKill struct {
-	//	CloudController *ccclient.Client
+	CloudController *ccclient.Client
 }
 
 //BaseBrokerModel - base struct describing a model to extend
