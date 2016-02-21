@@ -32,6 +32,10 @@ func (s *Maestro) cleanup() {
 
 //PollCrazyPlans -
 func (s *Maestro) PollCrazyPlans() {
+	s.poll(CrazyChaosPlanID, ChaosPeddlerServiceID, KillPercentCrazy)
+}
+
+func (s *Maestro) poll(planid, serviceid string, percent int) {
 	var serviceBindings = make([]ServiceBinding, 1)
 	binding := NewServiceBinding(false)
 	binding.SetBindDetails(brokerapi.BindDetails{
@@ -82,7 +86,7 @@ func (s *Maestro) ExpireCrazyRunlist() {
 
 //PollAnnoyingPlans -
 func (s *Maestro) PollAnnoyingPlans() {
-
+	s.poll(AnnoyingChaosPlanID, ChaosPeddlerServiceID, KillPercentAnnoying)
 }
 
 //ExpireAnnoyingRunlist -
@@ -92,7 +96,7 @@ func (s *Maestro) ExpireAnnoyingRunlist() {
 
 //PollMickeyMousePlans -
 func (s *Maestro) PollMickeyMousePlans() {
-
+	s.poll(MickeyMouseChaosPlanID, ChaosPeddlerServiceID, KillPercentMickeyMouse)
 }
 
 //ExpireMickeyMouseRunlist -

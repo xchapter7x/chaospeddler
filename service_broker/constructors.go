@@ -8,6 +8,12 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+//NewAppKill - construct a new app kill object
+func NewAppKill() *AppKill {
+	return nil
+}
+
+//NewMaestro - constructor for a maestro object
 var NewMaestro = func(username, password, loginurl string) (m *Maestro) {
 	m = new(Maestro)
 	m.AppKiller = &AppKill{
