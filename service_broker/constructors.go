@@ -1,17 +1,12 @@
 package chaospeddler
 
-import (
-	"net/http"
+import "gopkg.in/mgo.v2/bson"
 
-	"github.com/xchapter7x/cloudcontroller-client"
-
-	"gopkg.in/mgo.v2/bson"
-)
-
+//NewMaestro - construct a new maestro
 var NewMaestro = func(username, password, loginurl string) (m *Maestro) {
 	m = new(Maestro)
 	m.AppKiller = &AppKill{
-		CloudController: ccclient.New(loginurl, username, password, new(http.Client)),
+	//CloudController: ccclient.New(loginurl, username, password, new(http.Client)),
 	}
 	return
 }
