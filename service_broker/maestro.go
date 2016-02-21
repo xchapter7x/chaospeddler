@@ -35,6 +35,31 @@ func (s *Maestro) PollCrazyPlans() {
 	s.poll(CrazyChaosPlanID, ChaosPeddlerServiceID, KillPercentCrazy)
 }
 
+//PollAnnoyingPlans -
+func (s *Maestro) PollAnnoyingPlans() {
+	s.poll(AnnoyingChaosPlanID, ChaosPeddlerServiceID, KillPercentAnnoying)
+}
+
+//PollMickeyMousePlans -
+func (s *Maestro) PollMickeyMousePlans() {
+	s.poll(MickeyMouseChaosPlanID, ChaosPeddlerServiceID, KillPercentMickeyMouse)
+}
+
+//ExpireCrazyRunlist -
+func (s *Maestro) ExpireCrazyRunlist() {
+	lo.G.Info("expire crazy chaos log")
+}
+
+//ExpireAnnoyingRunlist -
+func (s *Maestro) ExpireAnnoyingRunlist() {
+	lo.G.Info("expire annoying chaos log")
+}
+
+//ExpireMickeyMouseRunlist -
+func (s *Maestro) ExpireMickeyMouseRunlist() {
+	lo.G.Info("expire mickeymouse chaos log")
+}
+
 func (s *Maestro) poll(planid, serviceid string, percent int) {
 	var serviceBindings = make([]ServiceBinding, 1)
 	binding := NewServiceBinding(false)
@@ -77,29 +102,4 @@ func (s *Maestro) extractKillSet(serviceBindings []ServiceBinding) (killSet []Se
 func random(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min) + min
-}
-
-//ExpireCrazyRunlist -
-func (s *Maestro) ExpireCrazyRunlist() {
-	lo.G.Info("expire crazy chaos log")
-}
-
-//PollAnnoyingPlans -
-func (s *Maestro) PollAnnoyingPlans() {
-	s.poll(AnnoyingChaosPlanID, ChaosPeddlerServiceID, KillPercentAnnoying)
-}
-
-//ExpireAnnoyingRunlist -
-func (s *Maestro) ExpireAnnoyingRunlist() {
-	lo.G.Info("expire annoying chaos log")
-}
-
-//PollMickeyMousePlans -
-func (s *Maestro) PollMickeyMousePlans() {
-	s.poll(MickeyMouseChaosPlanID, ChaosPeddlerServiceID, KillPercentMickeyMouse)
-}
-
-//ExpireMickeyMouseRunlist -
-func (s *Maestro) ExpireMickeyMouseRunlist() {
-	lo.G.Info("expire mickeymouse chaos log")
 }
