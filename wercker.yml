@@ -25,7 +25,8 @@ build:
     # Sets the go workspace and places you package
     # at the right place in the workspace tree
     - setup-go-workspace
-    - wercker/golint
+    - wercker/golint:
+        exclude: "vendor/"
 
     # Gets the dependencies
     - script:
@@ -33,11 +34,10 @@ build:
         code: |
           cd $WERCKER_SOURCE_DIR
           go version
-          go get github.com/tools/godep
           export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
 
     # Test the project
     - script:
         name: go test
         code: |
-          godep go test ./... -v -cover -race
+          go test ./service_broker/... . -v -cover -race

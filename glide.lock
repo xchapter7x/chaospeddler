@@ -1,5 +1,5 @@
-hash: 7af94ec87ea29146db20469b6fe49592c4f6c7c5adcbc15d75f01a480f8ea6d5
-updated: 2016-02-23T22:27:57.452731281-05:00
+hash: 8ab5fafcb1e0eb2bac1cfb22adec2578714982e63e6f06fd745032758d538e82
+updated: 2016-02-23T22:43:09.566423-05:00
 imports:
 - name: github.com/gorilla/context
   version: 1c83b3eabd45b6d76072b66b746c20815fb2872d
@@ -60,4 +60,6 @@ imports:
   subpackages:
   - bson
   - internal/scram
+- name: gopkg.in/tomb.v2
+  version: 14b3d72120e8d10ea6e6b7f87f7175734b1faab8
 devImports: []
