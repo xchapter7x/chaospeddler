@@ -34,10 +34,12 @@ build:
         code: |
           cd $WERCKER_SOURCE_DIR
           go version
+          go get github.com/Masterminds/glide
           export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
+          glide install
 
     # Test the project
     - script:
         name: go test
         code: |
-          go test ./service_broker/... . -v -cover -race
+          go test $(glide novendor) -v -cover -race
