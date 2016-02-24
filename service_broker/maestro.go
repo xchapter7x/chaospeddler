@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/gronpipmaster/mgodb"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/robfig/cron"
 	"github.com/xchapter7x/lo"
@@ -61,18 +60,17 @@ func (s *Maestro) ExpireMickeyMouseRunlist() {
 }
 
 func (s *Maestro) poll(planid, serviceid string, percent int) {
-	var serviceBindings = make([]ServiceBinding, 1)
-	binding := NewServiceBinding(false)
-	binding.SetBindDetails(brokerapi.BindDetails{
+	queryBinding := NewServiceBinding(false)
+	queryBinding.SetBindDetails(brokerapi.BindDetails{
 		PlanID:    CrazyChaosPlanID,
 		ServiceID: ChaosPeddlerServiceID,
 	})
-	query := mgodb.Query{
-		QueryDoc: binding,
+	if serviceBindings, err := queryBinding.FindAllMatches(); err == nil {
+		killSet := s.extractKillSet(serviceBindings)
+		s.kill(killSet, KillPercentCrazy)
+	} else {
+		lo.G.Error("there was an error when looking for matching records: ", err)
 	}
-	binding.FindAll(query, &serviceBindings)
-	killSet := s.extractKillSet(serviceBindings)
-	s.kill(killSet, KillPercentCrazy)
 }
 
 func (s *Maestro) kill(killSet []ServiceBinding, percent int) {

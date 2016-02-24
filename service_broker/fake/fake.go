@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	"github.com/gronpipmaster/mgodb"
 	"github.com/xchapter7x/chaospeddler/service_broker"
 	"github.com/xchapter7x/lo"
 )
@@ -26,7 +25,6 @@ func (s *BaseService) NewServiceBinding(setID bool) chaospeddler.BindingProvisio
 	model := new(serviceBinding)
 	model.ErrFake = s.ErrFake
 	model.SaveCount = s.SaveCount
-	model.DocsAssignment = s.DocsAssignment
 	model.FakeQueryResponse = s.FakeQueryResponse
 	return model
 }
@@ -35,8 +33,7 @@ func (s *BaseService) NewServiceBinding(setID bool) chaospeddler.BindingProvisio
 type BaseService struct {
 	ErrFake           error
 	SaveCount         *uint64
-	FakeQueryResponse interface{}
-	DocsAssignment    func(interface{}, interface{})
+	FakeQueryResponse []chaospeddler.ServiceBinding
 }
 
 type serviceBinding struct {
@@ -55,20 +52,12 @@ func (s *BaseService) Save() error {
 	return s.ErrFake
 }
 
-//FindAll ---
-func (s *BaseService) FindAll(query mgodb.Query, docs interface{}) (err error) {
-	lo.G.Debug("calling FindAll fake", docs, s.FakeQueryResponse)
-	s.DocsAssignment(docs, s.FakeQueryResponse)
+//FindAllMatches ---
+func (s *serviceBinding) FindAllMatches() (results []chaospeddler.ServiceBinding, err error) {
+	lo.G.Debug("calling FindAllMatches fake", s.FakeQueryResponse)
+	results = s.FakeQueryResponse
+	err = s.ErrFake
 	return
-}
-
-//ServiceBindingDocsAssignment ----
-func ServiceBindingDocsAssignment(dst interface{}, src interface{}) {
-	var dstTmp []chaospeddler.ServiceBinding
-	for _, v := range src.([]chaospeddler.ServiceBinding) {
-		dstTmp = append(dstTmp, v)
-	}
-	*(dst.(*[]chaospeddler.ServiceBinding)) = dstTmp
 }
 
 //GenerateQueryResponse ---

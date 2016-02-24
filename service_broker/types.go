@@ -68,7 +68,6 @@ type ServiceBinding struct {
 
 type mongoModeler interface {
 	Save() error
-	FindAll(query mgodb.Query, docs interface{}) (err error)
 	FindOne(queryDoc interface{}, doc interface{}) (err error)
 	ReloadDoc(doc interface{})
 }
@@ -81,6 +80,7 @@ type BindingProvisioner interface {
 	SetBindingID(string)
 	SetBindDetails(brokerapi.BindDetails)
 	SetActive(bool)
+	FindAllMatches() ([]ServiceBinding, error)
 }
 
 //InstanceProvisioner - interface defining a object which can provision and

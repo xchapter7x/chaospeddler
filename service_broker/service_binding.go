@@ -24,3 +24,8 @@ func (s *ServiceBinding) SetBindDetails(dt brokerapi.BindDetails) {
 func (s *ServiceBinding) SetActive(active bool) {
 	s.Active = active
 }
+
+//FindAllMatches - find all bindings meeting the given binding signature
+func (s *ServiceBinding) FindAllMatches() (results []ServiceBinding, err error) {
+	return
+}
