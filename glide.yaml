@@ -1,0 +1,31 @@
+package: github.com/xchapter7x/chaospeddler
+import:
+- package: github.com/gorilla/context
+  version: 1c83b3eabd45b6d76072b66b746c20815fb2872d
+- package: github.com/gorilla/mux
+  version: 26a6070f849969ba72b72256e9f14cf519751690
+- package: github.com/gronpipmaster/mgodb
+  version: 5912458756160bf74e5ef5c5ec4c24c8fbed2ac0
+- package: github.com/onsi/ginkgo
+  version: 4e965bd136569a9db429768a24b5789b473c8e31
+- package: github.com/onsi/gomega
+  version: 91ddcd2375dd05fecea5eabf7a8f86332de756f4
+- package: github.com/op/go-logging
+  version: f9dfb79d4f4eb950e6bb3ca5660e3c31cac8f02c
+- package: github.com/pivotal-cf/brokerapi
+  version: 4e5eff796f401f6188371ecc37311e579113483d
+- package: github.com/pivotal-golang/lager
+  version: 95b2ada4cdf781bdcf07e5207879e034ac8c5314
+- package: github.com/robfig/cron
+  version: 32d9c273155a0506d27cf73dd1246e86a470997e
+- package: github.com/xchapter7x/cloudcontroller-client
+  version: 27896811a22849ade4d3b738fd2d41e8a2b61407
+- package: github.com/xchapter7x/lo
+  version: aa2602d0e8e8647f0ce7b53109b37040941915aa
+- package: gopkg.in/mgo.v2
+  version: d90005c5262a3463800497ea5a89aed5fe22c886
+  subpackages:
+  - bson
+- package: github.com/xchapter7x/chaospeddler
+  subpackages:
+  - service_broker
