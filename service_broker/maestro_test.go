@@ -42,20 +42,13 @@ func testPlanPolling(name string, maestro *Maestro, maestroFunc func(), killPerc
 				NewServiceBinding = origNewServiceBinding
 			})
 
-			var itAssertions = func() {
-				It(fmt.Sprintf("Then it should select a kill group size no greaater than %v of the result set", KillGroupSize), func() {
-					maestroFunc()
-					min := 1
-					max := int(float64(len(f.FakeQueryResponse)) * float64(KillGroupSize))
-					Ω(*appKiller.KillCounter).Should(BeNumerically(">=", min))
-					Ω(*appKiller.KillCounter).Should(BeNumerically("<", max))
-				})
-			}
-
-			for i := 1; i < 200; i++ {
-				itAssertions()
-			}
-			itAssertions()
+			It(fmt.Sprintf("Then it should select a kill group size no greaater than %v of the result set", KillGroupSize), func() {
+				maestroFunc()
+				min := 1
+				max := int(float64(len(f.FakeQueryResponse)) * float64(KillGroupSize))
+				Ω(*appKiller.KillCounter).Should(BeNumerically(">=", min))
+				Ω(*appKiller.KillCounter).Should(BeNumerically("<", max))
+			})
 		})
 	})
 }
