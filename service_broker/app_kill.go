@@ -30,7 +30,7 @@ func (s *AppKill) getAIInfo(appGUID string) (aiList map[string]map[string]interf
 	var res *http.Response
 	req, err = http.NewRequest("GET", s.CloudControllerAPIURL+"/v2/apps/"+appGUID+"/instances", nil)
 	s.CloudController.AccessTokenDecorate(req)
-	res, err = s.HttpClient.Do(req)
+	res, err = s.HTTPClient.Do(req)
 	body, _ := ioutil.ReadAll(res.Body)
 	json.Unmarshal(body, &aiList)
 	return

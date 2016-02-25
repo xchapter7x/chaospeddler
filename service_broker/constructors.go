@@ -20,7 +20,7 @@ func NewAppKill(username, password, loginurl, ccurl string) (a *AppKill) {
 	if client, err := ccclient.New(loginurl, username, password, httpClient).Login(); err == nil {
 		a = &AppKill{
 			CloudController:       client,
-			HttpClient:            httpClient,
+			HTTPClient:            httpClient,
 			CloudControllerAPIURL: ccurl,
 		}
 	} else {

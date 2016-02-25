@@ -35,7 +35,7 @@ type AppInstanceKiller interface {
 //AppKill - implements AppInstanceKiller to kill apps
 type AppKill struct {
 	CloudController       *ccclient.Client
-	HttpClient            *http.Client
+	HTTPClient            *http.Client
 	CloudControllerAPIURL string
 }
 
