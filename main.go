@@ -12,7 +12,13 @@ import (
 )
 
 func main() {
-	chaos := chaospeddler.NewServiceBroker(new(chaospeddler.Maestro))
+	var (
+		username string
+		password string
+		loginurl string
+		ccurl    string
+	)
+	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(username, password, loginurl, ccurl))
 	chaos.Start()
 	logger := lager.NewLogger("chaos-peddler-servicebroker")
 	credentials := brokerapi.BrokerCredentials{
