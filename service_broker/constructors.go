@@ -1,24 +1,38 @@
 package chaospeddler
 
 import (
+	"crypto/tls"
 	"net/http"
 
 	"github.com/xchapter7x/cloudcontroller-client"
+	"github.com/xchapter7x/lo"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 //NewAppKill - construct a new app kill object
-func NewAppKill() *AppKill {
-	return nil
+func NewAppKill(username, password, loginurl, ccurl string) (a *AppKill) {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	httpClient := &http.Client{Transport: tr}
+
+	if client, err := ccclient.New(loginurl, username, password, httpClient).Login(); err == nil {
+		a = &AppKill{
+			CloudController:       client,
+			HttpClient:            httpClient,
+			CloudControllerAPIURL: ccurl,
+		}
+	} else {
+		lo.G.Error("there was an error logging in", err)
+	}
+	return
 }
 
 //NewMaestro - constructor for a maestro object
-var NewMaestro = func(username, password, loginurl string) (m *Maestro) {
+var NewMaestro = func(username, password, loginurl, ccurl string) (m *Maestro) {
 	m = new(Maestro)
-	m.AppKiller = &AppKill{
-		CloudController: ccclient.New(loginurl, username, password, new(http.Client)),
-	}
+	m.AppKiller = NewAppKill(username, password, loginurl, ccurl)
 	return
 }
 

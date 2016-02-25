@@ -1,6 +1,7 @@
 package chaospeddler
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/gronpipmaster/mgodb"
@@ -28,12 +29,14 @@ type Maestro struct {
 
 //AppInstanceKiller - an interface which kills app instances
 type AppInstanceKiller interface {
-	KillPercent(ServiceBinding, int) error
+	KillPercent(ServiceBinding, int) (map[string]int, error)
 }
 
 //AppKill - implements AppInstanceKiller to kill apps
 type AppKill struct {
-	CloudController *ccclient.Client
+	CloudController       *ccclient.Client
+	HttpClient            *http.Client
+	CloudControllerAPIURL string
 }
 
 //BaseBrokerModel - base struct describing a model to extend

@@ -1,5 +1,10 @@
 package chaospeddler
 
+import (
+	"math/rand"
+	"time"
+)
+
 //Package constants
 const (
 	ChaosPeddlerServiceID  = "e6fcd6aa-047e-42be-bcfc-c8a2b426d707"
@@ -12,3 +17,8 @@ const (
 	KillPercentMickeyMouse = 5
 	KillGroupSize          = .10
 )
+
+var random = func(min, max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max-min) + min
+}

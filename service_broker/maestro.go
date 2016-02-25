@@ -2,8 +2,6 @@ package chaospeddler
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/robfig/cron"
@@ -78,8 +76,10 @@ func (s *Maestro) kill(killSet []ServiceBinding, percent int) {
 	for _, v := range killSet {
 		lo.G.Debug("killing app: ", v)
 
-		if err := s.AppKiller.KillPercent(v, percent); err != nil {
-			lo.G.Error("error on app kill: ", err)
+		if killRatio, err := s.AppKiller.KillPercent(v, percent); err != nil {
+			lo.G.Error("error on app kill: ", err, killRatio)
+		} else {
+			lo.G.Debug("killratio: ", killRatio)
 		}
 	}
 	lo.G.Debug(fmt.Sprintf("killing %v apps", len(killSet)))
@@ -95,9 +95,4 @@ func (s *Maestro) extractKillSet(serviceBindings []ServiceBinding) (killSet []Se
 		killSet = append(killSet, serviceBindings[idx])
 	}
 	return
-}
-
-func random(min, max int) int {
-	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(max-min) + min
 }

@@ -1,0 +1,21 @@
+{
+  "0": {
+    "state": "RUNNING",
+    "since": 1403140717.984577,
+    "uptime": 2405
+  },
+  "1": {
+    "state": "STARTING",
+    "since": 3625363939.984577,
+    "uptime": 1394
+  },
+  "2": {
+    "state": "CRASHED",
+    "since": 2514251828.984577,
+    "uptime": 283
+  },
+  "3": {
+    "state": "DOWN",
+    "uptime": 9172
+  }
+}

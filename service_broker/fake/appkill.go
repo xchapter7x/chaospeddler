@@ -22,7 +22,7 @@ type AppKill struct {
 }
 
 //KillPercent ---
-func (s *AppKill) KillPercent(sb chaospeddler.ServiceBinding, p int) (err error) {
+func (s *AppKill) KillPercent(sb chaospeddler.ServiceBinding, p int) (killRatio map[string]int, err error) {
 	atomic.AddUint64(s.KillCounter, 1)
-	return s.ErrKillPercent
+	return nil, s.ErrKillPercent
 }
