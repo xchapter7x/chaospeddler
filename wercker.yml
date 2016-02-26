@@ -7,10 +7,6 @@ dev:
       package-dir: github.com/xchapter7x/chaospeddler
 
     - script:
-        name: env
-        code: env
-    
-    - script:
         name: go get
         code: |
           cd $WERCKER_SOURCE_DIR
@@ -26,9 +22,13 @@ dev:
           export VCAP_SERVICES=`envtemplate -file=fixtures/vcap_services.json`
           export VCAP_APPLICATION={}
 
+    - script:
+        name: env
+        code: env
+
     - internal/watch:
         code: >
-          PORT=80 go run main.go 
+          PORT=80 LOG_LEVEL=debug go run main.go 
 
 
 build:

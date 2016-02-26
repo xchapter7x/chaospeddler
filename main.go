@@ -33,19 +33,27 @@ func main() {
 
 func ExtractDBInfo() (dbInfo DBInfo) {
 	appEnv, _ := cfenv.Current()
-	fmt.Println("Services:", appEnv.Services)
+	service, _ := appEnv.Services.WithName("db-info")
+	dbInfo.ConnectionURL = fmt.Sprintf("%v", service.Credentials["uri"])
+	dbInfo.DBName = fmt.Sprintf("%v", service.Credentials["database"])
 	return
 }
 
 func ExtractBasicAuthInfo() (basicAuthInfo BasicAuthInfo) {
 	appEnv, _ := cfenv.Current()
-	fmt.Println("Services:", appEnv.Services)
+	service, _ := appEnv.Services.WithName("basic-auth-info")
+	basicAuthInfo.Username = fmt.Sprintf("%v", service.Credentials["username"])
+	basicAuthInfo.Password = fmt.Sprintf("%v", service.Credentials["password"])
 	return
 }
 
 func ExtractCloudControllerInfo() (cloudControllerInfo CloudControllerInfo) {
 	appEnv, _ := cfenv.Current()
-	fmt.Println("Services:", appEnv.Services)
+	service, _ := appEnv.Services.WithName("basic-auth-info")
+	cloudControllerInfo.Username = fmt.Sprintf("%v", service.Credentials["username"])
+	cloudControllerInfo.Password = fmt.Sprintf("%v", service.Credentials["password"])
+	cloudControllerInfo.LoginURL = fmt.Sprintf("%v", service.Credentials["login-url"])
+	cloudControllerInfo.CCURL = fmt.Sprintf("%v", service.Credentials["cc-url"])
 	return
 }
 
