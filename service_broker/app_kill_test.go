@@ -34,7 +34,7 @@ var _ = Describe("Given a AppKill", func() {
 				killRatio map[string]int
 			)
 
-			for _, control := range []map[string]int{{"killed": 1, "of": 4, "percent": 10}} {
+			for _, control := range []map[string]int{{"killed": 2, "of": 10, "percent": 10}} {
 				BeforeEach(func() {
 					killRatio, err = appKill.KillPercent(ServiceBinding{AppGUID: "someguid"}, control["percent"])
 				})
