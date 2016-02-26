@@ -39,7 +39,7 @@ var _ = Describe("Given a AppKill", func() {
 					killRatio, err = appKill.KillPercent(ServiceBinding{AppGUID: "someguid"}, control["percent"])
 				})
 				It("then it should kill the given percentage of AIs from the overall AI count", func() {
-					Ω(killRatio["killed"]).Should(Equal(control["killed"]))
+					Ω(killRatio["killed"]).Should(BeNumerically("<=", control["killed"]))
 					Ω(killRatio["of"]).Should(Equal(control["of"]))
 				})
 			}

@@ -27,3 +27,4 @@ import:
   subpackages:
   - bson
 - package: gopkg.in/tomb.v2
+- package: github.com/cloudfoundry-community/go-cfenv

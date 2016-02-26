@@ -86,13 +86,13 @@ func (s *Maestro) kill(killSet []ServiceBinding, percent int) {
 }
 
 func (s *Maestro) extractKillSet(serviceBindings []ServiceBinding) (killSet []ServiceBinding) {
-	lengthOfSet := int(float64(len(serviceBindings)) * float64(KillGroupSize))
-	lengthOfKillSet := random(lengthOfSet/4, lengthOfSet)
 
-	for i := 0; i < lengthOfKillSet; i++ {
-		idx := random(0, len(serviceBindings))
-		lo.G.Debug("selected index: ", idx)
-		killSet = append(killSet, serviceBindings[idx])
+	for i, v := range serviceBindings {
+
+		if percentChanceOfTrue(KillGroupPercentSelector) {
+			lo.G.Debug("selected index: ", i)
+			killSet = append(killSet, v)
+		}
 	}
 	return
 }

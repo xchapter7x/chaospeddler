@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"math"
 	"net/http"
+	"strconv"
 
 	"github.com/xchapter7x/lo"
 )
@@ -15,10 +15,18 @@ func (s *AppKill) KillPercent(binding ServiceBinding, percentKill int) (killRati
 	var aiList map[string]map[string]interface{}
 	var killList []int
 	aiList, err = s.getAIInfo(binding.AppGUID)
-	aiKillCount := int(math.Ceil(float64(len(aiList)) / float64(10)))
 
-	for i := 1; i <= aiKillCount; i++ {
-		killList = append(killList, random(0, len(aiList)))
+	for i, v := range aiList {
+
+		if percentChanceOfTrue(percentKill) {
+			lo.G.Debug("selected index: ", i, v)
+			idx, _ := strconv.Atoi(i)
+			killList = append(killList, idx)
+		}
+
+		if len(killList)/len(aiList) >= KillAIMaxPercentage/100 {
+			break
+		}
 	}
 	killRatio, err = s.killAIIndexes(binding.AppGUID, killList...)
 	killRatio["of"] = len(aiList)

@@ -1,12 +1,16 @@
-hash: 8ab5fafcb1e0eb2bac1cfb22adec2578714982e63e6f06fd745032758d538e82
-updated: 2016-02-23T22:43:09.566423-05:00
+hash: cd550f2dd02de24eb8beffa0d0af1b223a0d10b8f1b3fe01aea51c5b7810ac0e
+updated: 2016-02-25T23:30:32.226124246-05:00
 imports:
+- name: github.com/cloudfoundry-community/go-cfenv
+  version: b4bebec47a425334d2a076cf99329464c9e611f3
 - name: github.com/gorilla/context
   version: 1c83b3eabd45b6d76072b66b746c20815fb2872d
 - name: github.com/gorilla/mux
   version: 26a6070f849969ba72b72256e9f14cf519751690
 - name: github.com/gronpipmaster/mgodb
   version: 5912458756160bf74e5ef5c5ec4c24c8fbed2ac0
+- name: github.com/mitchellh/mapstructure
+  version: 740c764bc6149d3f1806231418adb9f52c11bcbf
 - name: github.com/onsi/ginkgo
   version: 4e965bd136569a9db429768a24b5789b473c8e31
   subpackages:
@@ -48,7 +52,7 @@ imports:
 - name: github.com/robfig/cron
   version: 32d9c273155a0506d27cf73dd1246e86a470997e
 - name: github.com/xchapter7x/chaospeddler
-  version: 24399d02c4258afe09bce2ecfb3d60774aa14018
+  version: 8bc67c665026e7709a88e037014e6d55c06dfc5c
   subpackages:
   - service_broker
 - name: github.com/xchapter7x/cloudcontroller-client

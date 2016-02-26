@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
+	"github.com/cloudfoundry-community/go-cfenv"
 	"github.com/gronpipmaster/mgodb"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/pivotal-golang/lager"
@@ -30,14 +32,20 @@ func main() {
 }
 
 func ExtractDBInfo() (dbInfo DBInfo) {
+	appEnv, _ := cfenv.Current()
+	fmt.Println("Services:", appEnv.Services)
 	return
 }
 
 func ExtractBasicAuthInfo() (basicAuthInfo BasicAuthInfo) {
+	appEnv, _ := cfenv.Current()
+	fmt.Println("Services:", appEnv.Services)
 	return
 }
 
 func ExtractCloudControllerInfo() (cloudControllerInfo CloudControllerInfo) {
+	appEnv, _ := cfenv.Current()
+	fmt.Println("Services:", appEnv.Services)
 	return
 }
 
