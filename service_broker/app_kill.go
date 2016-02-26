@@ -29,10 +29,18 @@ func (s *AppKill) getAIInfo(appGUID string) (aiList map[string]map[string]interf
 	var req *http.Request
 	var res *http.Response
 	req, err = http.NewRequest("GET", s.CloudControllerAPIURL+"/v2/apps/"+appGUID+"/instances", nil)
-	s.CloudController.AccessTokenDecorate(req)
-	res, err = s.HTTPClient.Do(req)
-	body, _ := ioutil.ReadAll(res.Body)
-	json.Unmarshal(body, &aiList)
+
+	if _, err = s.CloudController.Login(); err == nil {
+		s.CloudController.AccessTokenDecorate(req)
+
+		if res, err = s.HTTPClient.Do(req); err == nil {
+			var body []byte
+
+			if body, err = ioutil.ReadAll(res.Body); err == nil {
+				err = json.Unmarshal(body, &aiList)
+			}
+		}
+	}
 	return
 }
 

@@ -57,6 +57,7 @@ func NewTestServer(server *ghttp.Server) *ghttp.Server {
 	aiDeletePath, _ := regexp.Compile("/v2/apps/.*/instances/.*")
 	server.RouteToHandler("GET", aiInfoPath, aiInfoHandler)
 	server.RouteToHandler("DELETE", aiDeletePath, aiDeleteHandler)
+	server.RouteToHandler("POST", "/oauth/token", ghttp.RespondWith(http.StatusOK, "{}"))
 	server.AppendHandlers(
 		ghttp.RespondWith(http.StatusOK, loginTokenResponse),
 	)
