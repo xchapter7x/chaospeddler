@@ -16,8 +16,10 @@ func NewAppKill(username, password, loginurl, ccurl string) (a *AppKill) {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	httpClient := &http.Client{Transport: tr}
+	ccClient := ccclient.New(loginurl, username, password, httpClient)
+	lo.G.Debug("cc client: ", ccClient)
 
-	if client, err := ccclient.New(loginurl, username, password, httpClient).Login(); err == nil {
+	if client, err := ccClient.Login(); err == nil {
 		a = &AppKill{
 			CloudController:       client,
 			HTTPClient:            httpClient,

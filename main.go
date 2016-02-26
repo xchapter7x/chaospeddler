@@ -11,12 +11,14 @@ import (
 	"github.com/pivotal-golang/lager"
 
 	"github.com/xchapter7x/chaospeddler/service_broker"
+	"github.com/xchapter7x/lo"
 )
 
 func main() {
 	dbInfo := ExtractDBInfo()
 	basicAuthInfo := ExtractBasicAuthInfo()
 	cloudControllerInfo := ExtractCloudControllerInfo()
+	lo.G.Debug("cloud controller", cloudControllerInfo)
 	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(cloudControllerInfo.Username, cloudControllerInfo.Password, cloudControllerInfo.LoginURL, cloudControllerInfo.CCURL))
 	chaos.Start()
 	logger := lager.NewLogger("chaos-peddler-servicebroker")
@@ -49,7 +51,7 @@ func ExtractBasicAuthInfo() (basicAuthInfo BasicAuthInfo) {
 
 func ExtractCloudControllerInfo() (cloudControllerInfo CloudControllerInfo) {
 	appEnv, _ := cfenv.Current()
-	service, _ := appEnv.Services.WithName("basic-auth-info")
+	service, _ := appEnv.Services.WithName("cloud-controller-info")
 	cloudControllerInfo.Username = fmt.Sprintf("%v", service.Credentials["username"])
 	cloudControllerInfo.Password = fmt.Sprintf("%v", service.Credentials["password"])
 	cloudControllerInfo.LoginURL = fmt.Sprintf("%v", service.Credentials["login-url"])
