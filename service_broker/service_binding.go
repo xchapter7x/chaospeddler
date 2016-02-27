@@ -29,3 +29,8 @@ func (s *ServiceBinding) SetActive(active bool) {
 func (s *ServiceBinding) FindAllMatches() (results []ServiceBinding, err error) {
 	return
 }
+
+//GetCName - gives collection name to object when saved
+func (*ServiceBinding) GetCName() string {
+	return "servicebinding"
+}

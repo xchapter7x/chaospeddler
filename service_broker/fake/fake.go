@@ -67,10 +67,8 @@ func GenerateQueryResponse() []chaospeddler.ServiceBinding {
 	for i := 0; i < 100; i++ {
 
 		res = append(res, chaospeddler.ServiceBinding{
-			BaseBrokerModel: chaospeddler.BaseBrokerModel{
-				InstanceID: fmt.Sprintf("randominstance-%v", i),
-			},
-			BindingID: fmt.Sprintf("something-binding-%v", i),
+			InstanceID: fmt.Sprintf("randominstance-%v", i),
+			BindingID:  fmt.Sprintf("something-binding-%v", i),
 		})
 	}
 	return res

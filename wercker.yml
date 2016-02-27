@@ -27,8 +27,8 @@ dev:
         code: env
 
     - internal/watch:
-        code: >
-          PORT=80 LOG_LEVEL=debug go run main.go 
+        code: PORT=8080 LOG_LEVEL=debug go run main.go 
+        reload: true
 
 
 build:

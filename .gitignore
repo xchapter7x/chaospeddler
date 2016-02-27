@@ -1,2 +1,6 @@
 vendor/
 pws-creds.env
+_build
+_builds
+_projects
+_steps

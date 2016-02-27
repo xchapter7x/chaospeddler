@@ -39,34 +39,34 @@ type AppKill struct {
 	CloudControllerAPIURL string
 }
 
-//BaseBrokerModel - base struct describing a model to extend
-type BaseBrokerModel struct {
-	mgodb.Model `,inline`
-	ID          bson.ObjectId `bson:"_id,omitempty" 	json:"Id,omitempty"`
-	InstanceID  string        `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
-	Active      bool          `bson:"active,omitempty"		json:"Active,omitempty"`
-	Created     time.Time     `bson:"created,omitempty"		json:"Created,omitempty"`
-	Deleted     time.Time     `bson:"deleted,omitempty"		json:"Deleted,omitempty"`
-}
-
 //ServiceInstance - model to persist service instance information
 type ServiceInstance struct {
+	mgodb.Model      `,inline`
+	ID               bson.ObjectId          `bson:"_id,omitempty" 	json:"Id,omitempty"`
 	ServiceID        string                 `json:"service_id"`
 	PlanID           string                 `json:"plan_id"`
 	OrganizationGUID string                 `json:"organization_guid"`
 	SpaceGUID        string                 `json:"space_guid"`
 	Parameters       map[string]interface{} `json:"parameters,omitempty"`
-	BaseBrokerModel
+	InstanceID       string                 `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
+	Active           bool                   `bson:"active,omitempty"		json:"Active,omitempty"`
+	Created          time.Time              `bson:"created,omitempty"		json:"Created,omitempty"`
+	Deleted          time.Time              `bson:"deleted,omitempty"		json:"Deleted,omitempty"`
 }
 
 //ServiceBinding - model to persist service binding information
 type ServiceBinding struct {
-	BaseBrokerModel
-	AppGUID    string                 `json:"app_guid"`
-	PlanID     string                 `json:"plan_id"`
-	ServiceID  string                 `json:"service_id"`
-	Parameters map[string]interface{} `json:"parameters,omitempty"`
-	BindingID  string                 `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
+	mgodb.Model `,inline`
+	ID          bson.ObjectId          `bson:"_id,omitempty" 	json:"Id,omitempty"`
+	InstanceID  string                 `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
+	Active      bool                   `bson:"active,omitempty"		json:"Active,omitempty"`
+	Created     time.Time              `bson:"created,omitempty"		json:"Created,omitempty"`
+	Deleted     time.Time              `bson:"deleted,omitempty"		json:"Deleted,omitempty"`
+	AppGUID     string                 `json:"app_guid"`
+	PlanID      string                 `json:"plan_id"`
+	ServiceID   string                 `json:"service_id"`
+	Parameters  map[string]interface{} `json:"parameters,omitempty"`
+	BindingID   string                 `bson:"instance_id,omitempty"		json:"InstanceId,omitempty"`
 }
 
 type mongoModeler interface {

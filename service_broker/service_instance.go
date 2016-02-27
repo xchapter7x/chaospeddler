@@ -20,3 +20,8 @@ func (s *ServiceInstance) SetProvisionDetails(dt brokerapi.ProvisionDetails) {
 func (s *ServiceInstance) SetActive(active bool) {
 	s.Active = active
 }
+
+//GetCName - gives collection name to object when saved
+func (*ServiceInstance) GetCName() string {
+	return "serviceinstance"
+}
