@@ -15,8 +15,8 @@ $ ./testrunner
 **create a env file**
 
 ```bash
-$ touch local-dev.md
-$ vim local-dev.md
+$ touch pws-creds.env 
+$ vim pws-creds.env
 ```
 
 **sample file contents**
