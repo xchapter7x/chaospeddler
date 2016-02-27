@@ -35,7 +35,7 @@ build:
   steps:
     - setup-go-workspace
     - wercker/golint:
-        exclude: "vendor"
+        exclude: "^vendor\\|^service_broker/fake"
 
     # Gets the dependencies
     - script:
