@@ -1,6 +1,10 @@
 package chaospeddler
 
-import "github.com/pivotal-cf/brokerapi"
+import (
+	"time"
+
+	"github.com/pivotal-cf/brokerapi"
+)
 
 //SetInstanceID - setter
 func (s *ServiceInstance) SetInstanceID(id string) {
@@ -19,6 +23,12 @@ func (s *ServiceInstance) SetProvisionDetails(dt brokerapi.ProvisionDetails) {
 //SetActive - setter
 func (s *ServiceInstance) SetActive(active bool) {
 	s.Active = active
+
+	if s.Active {
+		s.Created = time.Now()
+	} else {
+		s.Deleted = time.Now()
+	}
 }
 
 //GetCName - gives collection name to object when saved

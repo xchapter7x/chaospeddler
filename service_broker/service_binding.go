@@ -1,6 +1,10 @@
 package chaospeddler
 
-import "github.com/pivotal-cf/brokerapi"
+import (
+	"time"
+
+	"github.com/pivotal-cf/brokerapi"
+)
 
 //SetInstanceID - setter
 func (s *ServiceBinding) SetInstanceID(id string) {
@@ -23,6 +27,12 @@ func (s *ServiceBinding) SetBindDetails(dt brokerapi.BindDetails) {
 //SetActive - setter
 func (s *ServiceBinding) SetActive(active bool) {
 	s.Active = active
+
+	if s.Active {
+		s.Created = time.Now()
+	} else {
+		s.Deleted = time.Now()
+	}
 }
 
 //FindAllMatches - find all bindings meeting the given binding signature
