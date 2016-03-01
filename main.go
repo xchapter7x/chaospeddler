@@ -6,7 +6,9 @@ import (
 	"os"
 
 	"github.com/cloudfoundry-community/go-cfenv"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gronpipmaster/mgodb"
+	"github.com/jinzhu/gorm"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/pivotal-golang/lager"
 
@@ -15,11 +17,12 @@ import (
 )
 
 func main() {
-	dbInfo := ExtractDBInfo()
+	sqlConn := ExtractDBSQL()
+	dbInfo := ExtractDBInfoMongo()
 	basicAuthInfo := ExtractBasicAuthInfo()
 	cloudControllerInfo := ExtractCloudControllerInfo()
 	lo.G.Debug("cloud controller", cloudControllerInfo)
-	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(cloudControllerInfo.Username, cloudControllerInfo.Password, cloudControllerInfo.LoginURL, cloudControllerInfo.CCURL))
+	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(cloudControllerInfo.Username, cloudControllerInfo.Password, cloudControllerInfo.LoginURL, cloudControllerInfo.CCURL, &sqlConn))
 	chaos.Start()
 	logger := lager.NewLogger("chaos-peddler-servicebroker")
 	credentials := brokerapi.BrokerCredentials{
@@ -33,7 +36,35 @@ func main() {
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
 
-func ExtractDBInfo() (dbInfo DBInfo) {
+func ExtractDBSQL() (db gorm.DB) {
+	var err error
+	host := os.Getenv("MARIADB_PORT_3306_TCP_ADDR")
+	port := os.Getenv("MARIADB_PORT_3306_TCP_PORT")
+	dbname := os.Getenv("MARIADB_ENV_MYSQL_DATABASE")
+	user := os.Getenv("MARIADB_ENV_MYSQL_ROOT_USERNAME")
+	pass := os.Getenv("MARIADB_ENV_MYSQL_ROOT_PASSWORD")
+	connectionString := user + ":" + pass + "@tcp(" + host + ":" + port + ")" + "/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
+	lo.G.Error("connection string: ", connectionString)
+
+	if db, err = gorm.Open("mysql", connectionString); err == nil {
+		db.DB()
+		db.DB().Ping()
+		db.DB().SetMaxIdleConns(10)
+		db.DB().SetMaxOpenConns(100)
+		db.SingularTable(true)
+		/*db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+			new(chaospeddler.ServiceInstance),
+			new(chaospeddler.ServiceBinding),
+		)*/
+
+	} else {
+		lo.G.Error("there was an error connecting to mysql: ", err)
+		panic(err)
+	}
+	return
+}
+
+func ExtractDBInfoMongo() (dbInfo DBInfo) {
 	appEnv, _ := cfenv.Current()
 	service, _ := appEnv.Services.WithName("db-info")
 	dbInfo.ConnectionURL = fmt.Sprintf("%v", service.Credentials["uri"])

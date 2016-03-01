@@ -1,14 +1,24 @@
-hash: cd550f2dd02de24eb8beffa0d0af1b223a0d10b8f1b3fe01aea51c5b7810ac0e
-updated: 2016-02-25T23:30:32.226124246-05:00
+hash: 0b201fa0d951082da549e71db19cbd6b44dafc9e732f330c003171dc5696e826
+updated: 2016-02-29T22:47:21.534642688-05:00
 imports:
 - name: github.com/cloudfoundry-community/go-cfenv
   version: b4bebec47a425334d2a076cf99329464c9e611f3
+- name: github.com/go-sql-driver/mysql
+  version: 71f003c6e927d2550713e7637affb769977ece78
 - name: github.com/gorilla/context
   version: 1c83b3eabd45b6d76072b66b746c20815fb2872d
 - name: github.com/gorilla/mux
   version: 26a6070f849969ba72b72256e9f14cf519751690
 - name: github.com/gronpipmaster/mgodb
   version: 5912458756160bf74e5ef5c5ec4c24c8fbed2ac0
+- name: github.com/jinzhu/gorm
+  version: e1df3994fb585496b9224e25cba1d3c2d0e06460
+- name: github.com/jinzhu/inflection
+  version: 3272df6c21d04180007eb3349844c89a3856bc25
+- name: github.com/lib/pq
+  version: 69552e54d2a9d4c6a2438926a774930f7bc398ec
+  subpackages:
+  - hstore
 - name: github.com/mitchellh/mapstructure
   version: 740c764bc6149d3f1806231418adb9f52c11bcbf
 - name: github.com/onsi/ginkgo
@@ -52,7 +62,7 @@ imports:
 - name: github.com/robfig/cron
   version: 32d9c273155a0506d27cf73dd1246e86a470997e
 - name: github.com/xchapter7x/chaospeddler
-  version: 8bc67c665026e7709a88e037014e6d55c06dfc5c
+  version: af18da10100981c6300fad9e14081121138d31a2
   subpackages:
   - service_broker
 - name: github.com/xchapter7x/cloudcontroller-client

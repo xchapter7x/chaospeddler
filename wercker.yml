@@ -1,6 +1,11 @@
 box: golang
 services:
     - mongo
+    - id: mariadb
+      env:
+        MYSQL_ROOT_USERNAME: root
+        MYSQL_ROOT_PASSWORD: secretpass
+        MYSQL_DATABASE: 7fc9bc14-8e98-4218-93b7-4c3363791b4f
 dev:
   steps:
     - setup-go-workspace:

@@ -28,3 +28,5 @@ import:
   - bson
 - package: gopkg.in/tomb.v2
 - package: github.com/cloudfoundry-community/go-cfenv
+- package: github.com/jinzhu/gorm
+- package: github.com/go-sql-driver/mysql
