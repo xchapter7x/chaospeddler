@@ -1,4 +1,24 @@
 {
+  "p-mysql": [
+    {
+      "name": "spring-cloud-broker-db",
+      "label": "p-mysql",
+      "tags": [
+        "mysql",
+        "relational"
+      ],
+      "plan": "100mb-dev",
+      "credentials": {
+        "hostname": "{{.MARIADB_PORT_3306_TCP_ADDR}}",
+        "port": 3306,
+        "name": "cf_59501f9b-5528-421b-84e9-93f9dc6f1080",
+        "username": "{{.MARIADB_ENV_MYSQL_ROOT_USERNAME}}",
+        "password": "{{.MARIADB_ENV_MYSQL_ROOT_PASSWORD}}",
+        "uri": "mysql://{{.MARIADB_ENV_MYSQL_ROOT_USERNAME}}:{{.MARIADB_ENV_MYSQL_ROOT_PASSWORD}}@{{.MARIADB_PORT_3306_TCP_ADDR}}:{{.MARIADB_PORT_3306_TCP_PORT}}/cf_59501f9b-5528-421b-84e9-93f9dc6f1080?reconnect=true",
+        "jdbcUrl": "jdbc:mysql://{{.MARIADB_PORT_3306_TCP_ADDR}}:{{.MARIADB_PORT_3306_TCP_PORT}}/cf_59501f9b-5528-421b-84e9-93f9dc6f1080?user={{.MARIADB_ENV_MYSQL_ROOT_USERNAME}}&password={{.MARIADB_ENV_MYSQL_ROOT_PASSWORD}}"
+      }
+    }
+  ],
   "user-provided": [
     {
       "name": "basic-auth-info",
