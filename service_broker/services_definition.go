@@ -4,10 +4,15 @@ import "github.com/pivotal-cf/brokerapi"
 
 //Services - returns out chaos peddler service meta data.
 func (*ServiceBroker) Services() (services []brokerapi.Service) {
-	services = append(services, brokerapi.Service{
+	services = append(services, getChaoticService())
+	return
+}
+
+func getChaoticService() brokerapi.Service {
+	return brokerapi.Service{
 		ID:            ChaosPeddlerServiceID,
-		Name:          "Chaos-Peddler",
-		Description:   "Use the chaos peddler and have AIs randomly killed",
+		Name:          "Chaotic",
+		Description:   "Use the chaotic service to have AIs randomly killed",
 		Bindable:      true,
 		Tags:          []string{"chaos", "app", "testing"},
 		PlanUpdatable: true,
@@ -19,8 +24,7 @@ func (*ServiceBroker) Services() (services []brokerapi.Service) {
 		},
 		Metadata:        &brokerapi.ServiceMetadata{},
 		DashboardClient: &brokerapi.ServiceDashboardClient{},
-	})
-	return
+	}
 }
 
 func getCrazyChaosPlan() brokerapi.ServicePlan {

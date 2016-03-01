@@ -6,13 +6,6 @@ import (
 	"github.com/pivotal-cf/brokerapi"
 )
 
-//NewServiceBroker - service broker constructor
-func NewServiceBroker(orch Orchestrator) *ServiceBroker {
-	return &ServiceBroker{
-		Orchestrator: orch,
-	}
-}
-
 //Provision a new instance here. If async is allowed, the broker can still
 // chose to provision the instance synchronously.
 func (*ServiceBroker) Provision(instanceID string, details brokerapi.ProvisionDetails, asyncAllowed bool) (brokerapi.ProvisionedServiceSpec, error) {

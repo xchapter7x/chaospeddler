@@ -3,6 +3,7 @@ package chaospeddler
 import (
 	"fmt"
 
+	"github.com/jinzhu/gorm"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/robfig/cron"
 	"github.com/xchapter7x/lo"
@@ -15,6 +16,12 @@ func (s *Maestro) Start() {
 	c.AddFunc("@every 10m", s.PollAnnoyingPlans)
 	c.AddFunc("@every 30m", s.PollMickeyMousePlans)
 	c.Start()
+}
+
+//Db - allows maestro to implement the orachestrator interface, returns the db
+//connection
+func (s *Maestro) Db() *gorm.DB {
+	return s.db
 }
 
 //PollCrazyPlans -

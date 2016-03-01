@@ -4,11 +4,19 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	"github.com/jinzhu/gorm"
 	"github.com/xchapter7x/cloudcontroller-client"
 	"github.com/xchapter7x/lo"
 
 	"gopkg.in/mgo.v2/bson"
 )
+
+//NewServiceBroker - service broker constructor
+func NewServiceBroker(orch Orchestrator) *ServiceBroker {
+	return &ServiceBroker{
+		Orchestrator: orch,
+	}
+}
 
 //NewAppKill - construct a new app kill object
 func NewAppKill(username, password, loginurl, ccurl string) (a *AppKill) {
@@ -32,8 +40,9 @@ func NewAppKill(username, password, loginurl, ccurl string) (a *AppKill) {
 }
 
 //NewMaestro - constructor for a maestro object
-var NewMaestro = func(username, password, loginurl, ccurl string) (m *Maestro) {
+var NewMaestro = func(username, password, loginurl, ccurl string, db *gorm.DB) (m *Maestro) {
 	m = new(Maestro)
+	m.db = db
 	m.AppKiller = NewAppKill(username, password, loginurl, ccurl)
 	return
 }

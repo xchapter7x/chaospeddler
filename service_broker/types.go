@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gronpipmaster/mgodb"
+	"github.com/jinzhu/gorm"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/xchapter7x/cloudcontroller-client"
 	"gopkg.in/mgo.v2/bson"
@@ -24,6 +25,7 @@ type Orchestrator interface {
 //Maestro - implements the chaosOrchestrater interface for real use in the
 //service
 type Maestro struct {
+	db        *gorm.DB
 	AppKiller AppInstanceKiller
 }
 
