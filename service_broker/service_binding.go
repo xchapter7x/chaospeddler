@@ -1,6 +1,7 @@
 package chaospeddler
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/pivotal-cf/brokerapi"
@@ -21,7 +22,8 @@ func (s *ServiceBinding) SetBindDetails(dt brokerapi.BindDetails) {
 	s.AppGUID = dt.AppGUID
 	s.PlanID = dt.PlanID
 	s.ServiceID = dt.ServiceID
-	s.Parameters = dt.Parameters
+	b, _ := json.Marshal(dt.Parameters)
+	s.Parameters = string(b)
 }
 
 //SetActive - setter

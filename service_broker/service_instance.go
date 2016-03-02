@@ -1,6 +1,7 @@
 package chaospeddler
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/pivotal-cf/brokerapi"
@@ -16,7 +17,8 @@ func (s *ServiceInstance) SetProvisionDetails(dt brokerapi.ProvisionDetails) {
 	s.PlanID = dt.PlanID
 	s.OrganizationGUID = dt.OrganizationGUID
 	s.SpaceGUID = dt.SpaceGUID
-	s.Parameters = dt.Parameters
+	b, _ := json.Marshal(dt.Parameters)
+	s.Parameters = string(b)
 	s.ServiceID = dt.ServiceID
 }
 

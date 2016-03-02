@@ -1,7 +1,7 @@
 {
   "p-mysql": [
     {
-      "name": "spring-cloud-broker-db",
+      "name": "sql-info",
       "label": "p-mysql",
       "tags": [
         "mysql",
