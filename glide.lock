@@ -1,5 +1,5 @@
 hash: 0b201fa0d951082da549e71db19cbd6b44dafc9e732f330c003171dc5696e826
-updated: 2016-03-05T13:56:02.535928765-05:00
+updated: 2016-03-05T14:01:13.573739505-05:00
 imports:
 - name: github.com/cloudfoundry-community/go-cfenv
   version: b4bebec47a425334d2a076cf99329464c9e611f3
@@ -62,7 +62,7 @@ imports:
 - name: github.com/robfig/cron
   version: 32d9c273155a0506d27cf73dd1246e86a470997e
 - name: github.com/xchapter7x/chaospeddler
-  version: 56e677b3b674fb5f7aa2bfbcd958d664ef3f2ddc
+  version: 56a23f0e0439d7ea81cbe761ede0d62502604454
   subpackages:
   - service_broker
 - name: github.com/xchapter7x/cloudcontroller-client

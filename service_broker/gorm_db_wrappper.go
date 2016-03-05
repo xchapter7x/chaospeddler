@@ -4,7 +4,9 @@ import "database/sql"
 
 //Where - wraps where to return the interface type
 func (s *GormDBWrapper) Where(query interface{}, args ...interface{}) GormDB {
-	return s.Where(query, args...)
+	db := s.DBWrapper.DB.Where(query, args...)
+	s.DBWrapper = DBWrapper{db}
+	return s
 }
 
 //DB - a wrapper to delegate down to the gorm.DB

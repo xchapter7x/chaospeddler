@@ -1,6 +1,5 @@
 box: golang
 services:
-    - mongo
     - id: mariadb
       env:
         MYSQL_ROOT_USERNAME: root
