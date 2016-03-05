@@ -33,7 +33,7 @@ var percentChanceOfTrue = func(i int) bool {
 
 //FindAllMatches - finds all matches for the given arguments
 var FindAllMatches = func(db GormDB, planID, serviceID string) (serviceBindings []ServiceBinding, err error) {
-	db.Where("planid = ? and serviceid = ?", planID, serviceID).Find(&serviceBindings)
+	db.Where("plan_id = ? and service_id = ?", planID, serviceID).Find(&serviceBindings)
 
 	if len(serviceBindings) == 0 {
 		err = errors.New("no plan/serviceid matches found")
