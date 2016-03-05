@@ -66,6 +66,7 @@ type GormDBWrapper struct {
 	DBWrapper
 }
 
+//DBWrapper - a struct to wrap the gorm.DB
 type DBWrapper struct {
 	*gorm.DB
 }

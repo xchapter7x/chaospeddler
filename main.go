@@ -44,6 +44,7 @@ func main() {
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
 
+//ExtractDBSQL ---
 func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 	var err error
 	var db gorm.DB
@@ -77,6 +78,7 @@ func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 	return
 }
 
+//ExtractDBInfoMongo ----
 func ExtractDBInfoMongo() (dbInfo DBInfo) {
 	appEnv, _ := cfenv.Current()
 	service, _ := appEnv.Services.WithName("db-info")
@@ -85,6 +87,7 @@ func ExtractDBInfoMongo() (dbInfo DBInfo) {
 	return
 }
 
+//ExtractBasicAuthInfo ----
 func ExtractBasicAuthInfo() (basicAuthInfo BasicAuthInfo) {
 	appEnv, _ := cfenv.Current()
 	service, _ := appEnv.Services.WithName("basic-auth-info")
@@ -93,6 +96,7 @@ func ExtractBasicAuthInfo() (basicAuthInfo BasicAuthInfo) {
 	return
 }
 
+//ExtractCloudControllerInfo ----
 func ExtractCloudControllerInfo() (cloudControllerInfo CloudControllerInfo) {
 	appEnv, _ := cfenv.Current()
 	service, _ := appEnv.Services.WithName("cloud-controller-info")
@@ -103,6 +107,7 @@ func ExtractCloudControllerInfo() (cloudControllerInfo CloudControllerInfo) {
 	return
 }
 
+//CloudControllerInfo ----
 type CloudControllerInfo struct {
 	Username string
 	Password string
@@ -110,11 +115,13 @@ type CloudControllerInfo struct {
 	CCURL    string
 }
 
+//BasicAuthInfo ----
 type BasicAuthInfo struct {
 	Username string
 	Password string
 }
 
+//DBInfo ----
 type DBInfo struct {
 	ConnectionURL string
 	DBName        string
