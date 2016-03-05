@@ -1,6 +1,7 @@
 package chaospeddler
 
 import (
+	"errors"
 	"math"
 	"math/rand"
 	"time"
@@ -28,4 +29,14 @@ var random = func(min, max int) int {
 var percentChanceOfTrue = func(i int) bool {
 	mod := float64(100 / i)
 	return math.Mod(float64(random(0, 100)), mod) == 0
+}
+
+//FindAllMatches - finds all matches for the given arguments
+var FindAllMatches = func(db GormDB, planID, serviceID string) (serviceBindings []ServiceBinding, err error) {
+	db.Where("planid = ? and serviceid = ?", planID, serviceID).Find(&serviceBindings)
+
+	if len(serviceBindings) == 0 {
+		err = errors.New("no plan/serviceid matches found")
+	}
+	return
 }

@@ -27,9 +27,9 @@ func (s *ServiceInstance) SetActive(active bool) {
 	s.Active = active
 
 	if s.Active {
-		s.Created = time.Now()
+		s.CreatedAt = time.Now()
 	} else {
-		s.Deleted = time.Now()
+		s.DeletedAt = time.Now()
 	}
 }
 

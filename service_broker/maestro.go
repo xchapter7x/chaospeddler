@@ -3,8 +3,6 @@ package chaospeddler
 import (
 	"fmt"
 
-	"github.com/jinzhu/gorm"
-	"github.com/pivotal-cf/brokerapi"
 	"github.com/robfig/cron"
 	"github.com/xchapter7x/lo"
 )
@@ -20,7 +18,7 @@ func (s *Maestro) Start() {
 
 //Db - allows maestro to implement the orachestrator interface, returns the db
 //connection
-func (s *Maestro) Db() *gorm.DB {
+func (s *Maestro) DB() GormDB {
 	return s.db
 }
 
@@ -40,14 +38,11 @@ func (s *Maestro) PollMickeyMousePlans() {
 }
 
 func (s *Maestro) poll(planid, serviceid string, percent int) {
-	queryBinding := NewServiceBinding(false)
-	queryBinding.SetBindDetails(brokerapi.BindDetails{
-		PlanID:    CrazyChaosPlanID,
-		ServiceID: ChaosPeddlerServiceID,
-	})
-	if serviceBindings, err := queryBinding.FindAllMatches(); err == nil {
+
+	if serviceBindings, err := FindAllMatches(s.db, planid, serviceid); err == nil {
 		killSet := s.extractKillSet(serviceBindings)
-		s.kill(killSet, KillPercentCrazy)
+		s.kill(killSet, percent)
+
 	} else {
 		lo.G.Error("there was an error when looking for matching records: ", err)
 	}

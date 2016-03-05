@@ -22,7 +22,7 @@ func main() {
 	basicAuthInfo := ExtractBasicAuthInfo()
 	cloudControllerInfo := ExtractCloudControllerInfo()
 	lo.G.Debug("cloud controller", cloudControllerInfo)
-	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(cloudControllerInfo.Username, cloudControllerInfo.Password, cloudControllerInfo.LoginURL, cloudControllerInfo.CCURL, &sqlConn))
+	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(cloudControllerInfo.Username, cloudControllerInfo.Password, cloudControllerInfo.LoginURL, cloudControllerInfo.CCURL, &chaospeddler.GormDBWrapper{sqlConn}))
 	chaos.Start()
 	logger := lager.NewLogger("chaos-peddler-servicebroker")
 	credentials := brokerapi.BrokerCredentials{
@@ -52,10 +52,10 @@ func ExtractDBSQL() (db gorm.DB) {
 		db.DB().SetMaxIdleConns(10)
 		db.DB().SetMaxOpenConns(100)
 		db.SingularTable(true)
-		/*db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+		db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
 			new(chaospeddler.ServiceInstance),
 			new(chaospeddler.ServiceBinding),
-		)*/
+		)
 
 	} else {
 		lo.G.Error("there was an error connecting to mysql: ", err)

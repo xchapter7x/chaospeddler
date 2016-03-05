@@ -6,48 +6,52 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	. "github.com/xchapter7x/chaospeddler/service_broker"
-	"github.com/xchapter7x/chaospeddler/service_broker/fake"
+	"github.com/xchapter7x/chaospeddler/service_broker/fakes"
 )
 
 var _ = Describe("Given a Maestro", func() {
+	var gormDB1 = new(fakes.FakeGormDB)
+	var maestro1 = NewMaestro("", "", "", "", gormDB1)
+	testPlanPolling("CrazyChaosPlan", maestro1, maestro1.PollCrazyPlans, KillPercentCrazy, gormDB1)
 
-	var maestro1 = new(Maestro)
-	testPlanPolling("CrazyChaosPlan", maestro1, maestro1.PollCrazyPlans, KillPercentCrazy)
+	var gormDB2 = new(fakes.FakeGormDB)
+	var maestro2 = NewMaestro("", "", "", "", gormDB2)
+	testPlanPolling("AnnoyingChaosPlan", maestro2, maestro2.PollAnnoyingPlans, KillPercentAnnoying, gormDB2)
 
-	var maestro2 = new(Maestro)
-	testPlanPolling("AnnoyingChaosPlan", maestro2, maestro2.PollAnnoyingPlans, KillPercentAnnoying)
-
-	var maestro3 = new(Maestro)
-	testPlanPolling("MickeyMouseChaosPlan", maestro3, maestro3.PollMickeyMousePlans, KillPercentMickeyMouse)
+	var gormDB3 = new(fakes.FakeGormDB)
+	var maestro3 = NewMaestro("", "", "", "", gormDB3)
+	testPlanPolling("MickeyMouseChaosPlan", maestro3, maestro3.PollMickeyMousePlans, KillPercentMickeyMouse, gormDB3)
 })
 
-func testPlanPolling(name string, maestro *Maestro, maestroFunc func(), killPercent int) {
+func testPlanPolling(name string, maestro *Maestro, maestroFunc func(), killPercent int, db *fakes.FakeGormDB) {
 
 	Describe(fmt.Sprintf("Given a %s method", name), func() {
 		Context(fmt.Sprintf("When called on a valid set of %s plans", name), func() {
 
-			var origNewServiceBinding func(bool) BindingProvisioner
-			var f *fake.BaseService
-			var appKiller *fake.AppKill
+			var appKiller *fakes.FakeAppInstanceKiller
+			var origFindAllMatches func(GormDB, string, string) ([]ServiceBinding, error)
 			BeforeEach(func() {
-				appKiller = fake.NewAppKill(nil)
+				appKiller = new(fakes.FakeAppInstanceKiller)
 				maestro.AppKiller = appKiller
-				f = new(fake.BaseService)
-				f.FakeQueryResponse = fake.GenerateQueryResponse()
-				origNewServiceBinding = NewServiceBinding
-				NewServiceBinding = f.NewServiceBinding
+				origFindAllMatches = FindAllMatches
+				FindAllMatches = func(g GormDB, i string, b string) ([]ServiceBinding, error) {
+					return fakes.GenerateQueryResponse(), nil
+				}
 			})
 
 			AfterEach(func() {
-				NewServiceBinding = origNewServiceBinding
+				FindAllMatches = origFindAllMatches
 			})
 
 			It(fmt.Sprintf("Then it should select a kill group size around %d but not greater than the result set", KillGroupPercentSelector), func() {
 				maestroFunc()
-				min := 0
-				max := len(f.FakeQueryResponse)
-				Ω(*appKiller.KillCounter).Should(BeNumerically(">=", min))
-				Ω(*appKiller.KillCounter).Should(BeNumerically("<", max))
+				_, percentCalled := appKiller.KillPercentArgsForCall(0)
+				Ω(true).Should(BeTrue())
+				Ω(appKiller.KillPercentCallCount()).Should(BeNumerically(">=", 1))
+				Ω(percentCalled).Should(Equal(killPercent))
+				//max := len(fakes.FakeQueryResponse())
+				//Ω(appKiller.KillPercentCallCount()).Should(BeNumerically(">=", min))
+				//Ω(appKiller.KillPercentCallCount()).Should(BeNumerically("<", max))
 			})
 		})
 	})
