@@ -22,7 +22,15 @@ func main() {
 	basicAuthInfo := ExtractBasicAuthInfo()
 	cloudControllerInfo := ExtractCloudControllerInfo()
 	lo.G.Debug("cloud controller", cloudControllerInfo)
-	chaos := chaospeddler.NewServiceBroker(chaospeddler.NewMaestro(cloudControllerInfo.Username, cloudControllerInfo.Password, cloudControllerInfo.LoginURL, cloudControllerInfo.CCURL, &chaospeddler.GormDBWrapper{sqlConn}))
+	chaos := chaospeddler.NewServiceBroker(
+		chaospeddler.NewMaestro(
+			cloudControllerInfo.Username,
+			cloudControllerInfo.Password,
+			cloudControllerInfo.LoginURL,
+			cloudControllerInfo.CCURL,
+			sqlConn,
+		),
+	)
 	chaos.Start()
 	logger := lager.NewLogger("chaos-peddler-servicebroker")
 	credentials := brokerapi.BrokerCredentials{
@@ -36,8 +44,9 @@ func main() {
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
 
-func ExtractDBSQL() (db gorm.DB) {
+func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 	var err error
+	var db gorm.DB
 	host := os.Getenv("MARIADB_PORT_3306_TCP_ADDR")
 	port := os.Getenv("MARIADB_PORT_3306_TCP_PORT")
 	dbname := os.Getenv("MARIADB_ENV_MYSQL_DATABASE")
@@ -56,6 +65,10 @@ func ExtractDBSQL() (db gorm.DB) {
 			new(chaospeddler.ServiceInstance),
 			new(chaospeddler.ServiceBinding),
 		)
+
+		gormdb = &chaospeddler.GormDBWrapper{
+			DBWrapper: chaospeddler.DBWrapper{&db},
+		}
 
 	} else {
 		lo.G.Error("there was an error connecting to mysql: ", err)
