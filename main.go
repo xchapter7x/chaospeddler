@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudfoundry-community/go-cfenv"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gronpipmaster/mgodb"
 	"github.com/jinzhu/gorm"
 	"github.com/pivotal-cf/brokerapi"
 	"github.com/pivotal-golang/lager"
@@ -18,7 +17,6 @@ import (
 
 func main() {
 	sqlConn := ExtractDBSQL()
-	dbInfo := ExtractDBInfoMongo()
 	basicAuthInfo := ExtractBasicAuthInfo()
 	cloudControllerInfo := ExtractCloudControllerInfo()
 	lo.G.Debug("cloud controller", cloudControllerInfo)
@@ -37,8 +35,6 @@ func main() {
 		Username: basicAuthInfo.Username,
 		Password: basicAuthInfo.Password,
 	}
-	var dbm *mgodb.Dbm
-	_ = dbm.Init(dbInfo.ConnectionURL, dbInfo.DBName, 10)
 	brokerAPI := brokerapi.New(chaos, logger, credentials)
 	http.Handle("/", brokerAPI)
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
