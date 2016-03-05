@@ -63,7 +63,11 @@ type ServiceBinding struct {
 
 //GormDBWrapper - wraps a gorm db so we can implement a cleaner interface
 type GormDBWrapper struct {
-	gorm.DB
+	DBWrapper
+}
+
+type DBWrapper struct {
+	*gorm.DB
 }
 
 //BindingProvisioner - interface defining a object which can provision and
