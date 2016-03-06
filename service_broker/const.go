@@ -2,6 +2,7 @@ package chaospeddler
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"math/rand"
 	"time"
@@ -36,7 +37,7 @@ var FindAllMatches = func(db GormDB, planID, serviceID string) (serviceBindings 
 	db.Where("plan_id = ? and service_id = ?", planID, serviceID).Find(&serviceBindings)
 
 	if len(serviceBindings) == 0 {
-		err = errors.New("no plan/serviceid matches found")
+		err = errors.New(fmt.Sprintf("no plan/serviceid matches found for: PlanID: %s and ServiceID: %s ", planID, serviceID))
 	}
 	return
 }
