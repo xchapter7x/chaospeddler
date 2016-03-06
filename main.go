@@ -44,11 +44,13 @@ func main() {
 func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 	var err error
 	var db gorm.DB
-	host := os.Getenv("MARIADB_PORT_3306_TCP_ADDR")
-	port := os.Getenv("MARIADB_PORT_3306_TCP_PORT")
-	dbname := os.Getenv("MARIADB_ENV_MYSQL_DATABASE")
-	user := os.Getenv("MARIADB_ENV_MYSQL_ROOT_USERNAME")
-	pass := os.Getenv("MARIADB_ENV_MYSQL_ROOT_PASSWORD")
+	appEnv, _ := cfenv.Current()
+	service, _ := appEnv.Services.WithName("sql-info")
+	host := fmt.Sprintf("%v", service.Credentials["hostname"])
+	port := fmt.Sprintf("%v", service.Credentials["port"])
+	dbname := fmt.Sprintf("%v", service.Credentials["name"])
+	user := fmt.Sprintf("%v", service.Credentials["username"])
+	pass := fmt.Sprintf("%v", service.Credentials["password"])
 	connectionString := user + ":" + pass + "@tcp(" + host + ":" + port + ")" + "/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
 	lo.G.Error("connection string: ", connectionString)
 
