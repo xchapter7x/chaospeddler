@@ -76,15 +76,6 @@ func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 	return
 }
 
-//ExtractDBInfoMongo ----
-func ExtractDBInfoMongo() (dbInfo DBInfo) {
-	appEnv, _ := cfenv.Current()
-	service, _ := appEnv.Services.WithName("db-info")
-	dbInfo.ConnectionURL = fmt.Sprintf("%v", service.Credentials["uri"])
-	dbInfo.DBName = fmt.Sprintf("%v", service.Credentials["database"])
-	return
-}
-
 //ExtractBasicAuthInfo ----
 func ExtractBasicAuthInfo() (basicAuthInfo BasicAuthInfo) {
 	appEnv, _ := cfenv.Current()

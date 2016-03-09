@@ -41,20 +41,6 @@
         "cc-url":"{{.CF_CC_URL}}"
       },
       "syslog_drain_url": ""
-    },
-    {
-      "name": "db-info",
-      "label": "user-provided",
-      "tags": [],
-      "credentials": {
-        "host":"{{.MONGO_PORT_27017_TCP_ADDR}}",
-        "database":"59501f9b-5528-421b-84e9-93f9dc6f1080",
-        "uri": "mongodb://{{.MONGO_PORT_27017_TCP_ADDR}}:{{.MONGO_PORT_27017_TCP_PORT}}/59501f9b-5528-421b-84e9-93f9dc6f1080",
-        "password":"",
-        "port":"{{.MONGO_PORT_27017_TCP_PORT}}", 
-        "scheme":"mongodb"
-      },
-      "syslog_drain_url": ""
     }
   ]
 }
