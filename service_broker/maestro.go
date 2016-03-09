@@ -19,7 +19,9 @@ func (s *Maestro) Start() {
 //Db - allows maestro to implement the orachestrator interface, returns the db
 //connection
 func (s *Maestro) DB() GormDB {
-	return s.db
+	return &GormDBWrapper{
+		DBWrapper: DBWrapper{s.db.New()},
+	}
 }
 
 //PollCrazyPlans -
@@ -39,7 +41,7 @@ func (s *Maestro) PollMickeyMousePlans() {
 
 func (s *Maestro) poll(planid, serviceid string, percent int) {
 
-	if serviceBindings, err := FindAllMatches(s.db, planid, serviceid); err == nil {
+	if serviceBindings, err := FindAllMatches(s.DB(), planid, serviceid); err == nil {
 		killSet := s.extractKillSet(serviceBindings)
 		s.kill(killSet, percent)
 
