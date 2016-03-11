@@ -62,16 +62,6 @@ type ServiceBinding struct {
 	BindingID  string `json:"InstanceId,omitempty"`
 }
 
-//GormDBWrapper - wraps a gorm db so we can implement a cleaner interface
-type GormDBWrapper struct {
-	DBWrapper
-}
-
-//DBWrapper - a struct to wrap the gorm.DB
-type DBWrapper struct {
-	*gorm.DB
-}
-
 //BindingProvisioner - interface defining a object which can provision and
 //unprovision a service binding
 type BindingProvisioner interface {
