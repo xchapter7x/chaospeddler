@@ -6,6 +6,8 @@ import (
 	"math"
 	"math/rand"
 	"time"
+
+	"github.com/xchapter7x/lo"
 )
 
 //Package constants
@@ -37,6 +39,7 @@ var FindAllMatches = func(db GormDB, planID, serviceID string) (serviceBindings 
 	db.Where("plan_id = ? and service_id = ?", planID, serviceID).Find(&serviceBindings)
 
 	if len(serviceBindings) == 0 {
+		lo.G.Debug("errors from db: ", db.GetErrors())
 		err = errors.New(fmt.Sprintf("no plan/serviceid matches found for: PlanID: %s and ServiceID: %s ", planID, serviceID))
 	}
 	return
