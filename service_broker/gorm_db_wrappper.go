@@ -13,3 +13,8 @@ func (s *GormDBWrapper) Where(query interface{}, args ...interface{}) GormDB {
 func (s *GormDBWrapper) DB() *sql.DB {
 	return s.DBWrapper.DB.DB()
 }
+
+//Ping - a call through to sql.Ping
+func (s *GormDBWrapper) Ping() error {
+	return s.DBWrapper.DB.DB().Ping()
+}

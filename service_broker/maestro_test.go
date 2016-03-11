@@ -11,15 +11,15 @@ import (
 
 var _ = Describe("Given a Maestro", func() {
 	var gormDB1 = new(fakes.FakeGormDB)
-	var maestro1 = NewMaestro("", "", "", "", gormDB1)
+	var maestro1 = NewMaestro("", "", "", "", gormDB1, nil)
 	testPlanPolling("CrazyChaosPlan", maestro1, maestro1.PollCrazyPlans, KillPercentCrazy, gormDB1)
 
 	var gormDB2 = new(fakes.FakeGormDB)
-	var maestro2 = NewMaestro("", "", "", "", gormDB2)
+	var maestro2 = NewMaestro("", "", "", "", gormDB2, nil)
 	testPlanPolling("AnnoyingChaosPlan", maestro2, maestro2.PollAnnoyingPlans, KillPercentAnnoying, gormDB2)
 
 	var gormDB3 = new(fakes.FakeGormDB)
-	var maestro3 = NewMaestro("", "", "", "", gormDB3)
+	var maestro3 = NewMaestro("", "", "", "", gormDB3, nil)
 	testPlanPolling("MickeyMouseChaosPlan", maestro3, maestro3.PollMickeyMousePlans, KillPercentMickeyMouse, gormDB3)
 })
 

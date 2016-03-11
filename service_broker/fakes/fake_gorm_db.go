@@ -29,20 +29,20 @@ type FakeGormDB struct {
 	addForeignKeyReturns struct {
 		result1 *gorm.DB
 	}
-	AddIndexStub        func(indexName string, column ...string) *gorm.DB
+	AddIndexStub        func(indexName string, columns ...string) *gorm.DB
 	addIndexMutex       sync.RWMutex
 	addIndexArgsForCall []struct {
 		indexName string
-		column    []string
+		columns   []string
 	}
 	addIndexReturns struct {
 		result1 *gorm.DB
 	}
-	AddUniqueIndexStub        func(indexName string, column ...string) *gorm.DB
+	AddUniqueIndexStub        func(indexName string, columns ...string) *gorm.DB
 	addUniqueIndexMutex       sync.RWMutex
 	addUniqueIndexArgsForCall []struct {
 		indexName string
-		column    []string
+		columns   []string
 	}
 	addUniqueIndexReturns struct {
 		result1 *gorm.DB
@@ -85,6 +85,12 @@ type FakeGormDB struct {
 	beginReturns     struct {
 		result1 *gorm.DB
 	}
+	CallbackStub        func() *gorm.Callback
+	callbackMutex       sync.RWMutex
+	callbackArgsForCall []struct{}
+	callbackReturns     struct {
+		result1 *gorm.Callback
+	}
 	CloseStub        func() error
 	closeMutex       sync.RWMutex
 	closeArgsForCall []struct{}
@@ -113,19 +119,13 @@ type FakeGormDB struct {
 	createReturns struct {
 		result1 *gorm.DB
 	}
-	CreateTableStub        func(values ...interface{}) *gorm.DB
+	CreateTableStub        func(models ...interface{}) *gorm.DB
 	createTableMutex       sync.RWMutex
 	createTableArgsForCall []struct {
-		values []interface{}
+		models []interface{}
 	}
 	createTableReturns struct {
 		result1 *gorm.DB
-	}
-	CurrentDatabaseStub        func() string
-	currentDatabaseMutex       sync.RWMutex
-	currentDatabaseArgsForCall []struct{}
-	currentDatabaseReturns     struct {
-		result1 string
 	}
 	DBStub        func() *sql.DB
 	dBMutex       sync.RWMutex
@@ -266,10 +266,11 @@ type FakeGormDB struct {
 	instantSetReturns struct {
 		result1 *gorm.DB
 	}
-	JoinsStub        func(query string) *gorm.DB
+	JoinsStub        func(query string, args ...interface{}) *gorm.DB
 	joinsMutex       sync.RWMutex
 	joinsArgsForCall []struct {
 		query string
+		args  []interface{}
 	}
 	joinsReturns struct {
 		result1 *gorm.DB
@@ -283,10 +284,10 @@ type FakeGormDB struct {
 	lastReturns struct {
 		result1 *gorm.DB
 	}
-	LimitStub        func(value interface{}) *gorm.DB
+	LimitStub        func(limit int) *gorm.DB
 	limitMutex       sync.RWMutex
 	limitArgsForCall []struct {
-		value interface{}
+		limit int
 	}
 	limitReturns struct {
 		result1 *gorm.DB
@@ -347,10 +348,10 @@ type FakeGormDB struct {
 	notReturns struct {
 		result1 *gorm.DB
 	}
-	OffsetStub        func(value interface{}) *gorm.DB
+	OffsetStub        func(offset int) *gorm.DB
 	offsetMutex       sync.RWMutex
 	offsetArgsForCall []struct {
-		value interface{}
+		offset int
 	}
 	offsetReturns struct {
 		result1 *gorm.DB
@@ -380,6 +381,12 @@ type FakeGormDB struct {
 	}
 	orderReturns struct {
 		result1 *gorm.DB
+	}
+	PingStub        func() error
+	pingMutex       sync.RWMutex
+	pingArgsForCall []struct{}
+	pingReturns     struct {
+		result1 error
 	}
 	PluckStub        func(column string, value interface{}) *gorm.DB
 	pluckMutex       sync.RWMutex
@@ -466,6 +473,15 @@ type FakeGormDB struct {
 	scanReturns struct {
 		result1 *gorm.DB
 	}
+	ScanRowsStub        func(rows *sql.Rows, result interface{}) error
+	scanRowsMutex       sync.RWMutex
+	scanRowsArgsForCall []struct {
+		rows   *sql.Rows
+		result interface{}
+	}
+	scanRowsReturns struct {
+		result1 error
+	}
 	ScopesStub        func(funcs ...func(*gorm.DB) *gorm.DB) *gorm.DB
 	scopesMutex       sync.RWMutex
 	scopesArgsForCall []struct {
@@ -491,13 +507,6 @@ type FakeGormDB struct {
 	}
 	setReturns struct {
 		result1 *gorm.DB
-	}
-	SetJoinTableHandlerStub        func(source interface{}, column string, handler gorm.JoinTableHandlerInterface)
-	setJoinTableHandlerMutex       sync.RWMutex
-	setJoinTableHandlerArgsForCall []struct {
-		source  interface{}
-		column  string
-		handler gorm.JoinTableHandlerInterface
 	}
 	SingularTableStub        func(enable bool)
 	singularTableMutex       sync.RWMutex
@@ -629,15 +638,15 @@ func (fake *FakeGormDB) AddForeignKeyReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
-func (fake *FakeGormDB) AddIndex(indexName string, column ...string) *gorm.DB {
+func (fake *FakeGormDB) AddIndex(indexName string, columns ...string) *gorm.DB {
 	fake.addIndexMutex.Lock()
 	fake.addIndexArgsForCall = append(fake.addIndexArgsForCall, struct {
 		indexName string
-		column    []string
-	}{indexName, column})
+		columns   []string
+	}{indexName, columns})
 	fake.addIndexMutex.Unlock()
 	if fake.AddIndexStub != nil {
-		return fake.AddIndexStub(indexName, column...)
+		return fake.AddIndexStub(indexName, columns...)
 	} else {
 		return fake.addIndexReturns.result1
 	}
@@ -652,7 +661,7 @@ func (fake *FakeGormDB) AddIndexCallCount() int {
 func (fake *FakeGormDB) AddIndexArgsForCall(i int) (string, []string) {
 	fake.addIndexMutex.RLock()
 	defer fake.addIndexMutex.RUnlock()
-	return fake.addIndexArgsForCall[i].indexName, fake.addIndexArgsForCall[i].column
+	return fake.addIndexArgsForCall[i].indexName, fake.addIndexArgsForCall[i].columns
 }
 
 func (fake *FakeGormDB) AddIndexReturns(result1 *gorm.DB) {
@@ -662,15 +671,15 @@ func (fake *FakeGormDB) AddIndexReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
-func (fake *FakeGormDB) AddUniqueIndex(indexName string, column ...string) *gorm.DB {
+func (fake *FakeGormDB) AddUniqueIndex(indexName string, columns ...string) *gorm.DB {
 	fake.addUniqueIndexMutex.Lock()
 	fake.addUniqueIndexArgsForCall = append(fake.addUniqueIndexArgsForCall, struct {
 		indexName string
-		column    []string
-	}{indexName, column})
+		columns   []string
+	}{indexName, columns})
 	fake.addUniqueIndexMutex.Unlock()
 	if fake.AddUniqueIndexStub != nil {
-		return fake.AddUniqueIndexStub(indexName, column...)
+		return fake.AddUniqueIndexStub(indexName, columns...)
 	} else {
 		return fake.addUniqueIndexReturns.result1
 	}
@@ -685,7 +694,7 @@ func (fake *FakeGormDB) AddUniqueIndexCallCount() int {
 func (fake *FakeGormDB) AddUniqueIndexArgsForCall(i int) (string, []string) {
 	fake.addUniqueIndexMutex.RLock()
 	defer fake.addUniqueIndexMutex.RUnlock()
-	return fake.addUniqueIndexArgsForCall[i].indexName, fake.addUniqueIndexArgsForCall[i].column
+	return fake.addUniqueIndexArgsForCall[i].indexName, fake.addUniqueIndexArgsForCall[i].columns
 }
 
 func (fake *FakeGormDB) AddUniqueIndexReturns(result1 *gorm.DB) {
@@ -847,6 +856,30 @@ func (fake *FakeGormDB) BeginReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
+func (fake *FakeGormDB) Callback() *gorm.Callback {
+	fake.callbackMutex.Lock()
+	fake.callbackArgsForCall = append(fake.callbackArgsForCall, struct{}{})
+	fake.callbackMutex.Unlock()
+	if fake.CallbackStub != nil {
+		return fake.CallbackStub()
+	} else {
+		return fake.callbackReturns.result1
+	}
+}
+
+func (fake *FakeGormDB) CallbackCallCount() int {
+	fake.callbackMutex.RLock()
+	defer fake.callbackMutex.RUnlock()
+	return len(fake.callbackArgsForCall)
+}
+
+func (fake *FakeGormDB) CallbackReturns(result1 *gorm.Callback) {
+	fake.CallbackStub = nil
+	fake.callbackReturns = struct {
+		result1 *gorm.Callback
+	}{result1}
+}
+
 func (fake *FakeGormDB) Close() error {
 	fake.closeMutex.Lock()
 	fake.closeArgsForCall = append(fake.closeArgsForCall, struct{}{})
@@ -959,14 +992,14 @@ func (fake *FakeGormDB) CreateReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
-func (fake *FakeGormDB) CreateTable(values ...interface{}) *gorm.DB {
+func (fake *FakeGormDB) CreateTable(models ...interface{}) *gorm.DB {
 	fake.createTableMutex.Lock()
 	fake.createTableArgsForCall = append(fake.createTableArgsForCall, struct {
-		values []interface{}
-	}{values})
+		models []interface{}
+	}{models})
 	fake.createTableMutex.Unlock()
 	if fake.CreateTableStub != nil {
-		return fake.CreateTableStub(values...)
+		return fake.CreateTableStub(models...)
 	} else {
 		return fake.createTableReturns.result1
 	}
@@ -981,37 +1014,13 @@ func (fake *FakeGormDB) CreateTableCallCount() int {
 func (fake *FakeGormDB) CreateTableArgsForCall(i int) []interface{} {
 	fake.createTableMutex.RLock()
 	defer fake.createTableMutex.RUnlock()
-	return fake.createTableArgsForCall[i].values
+	return fake.createTableArgsForCall[i].models
 }
 
 func (fake *FakeGormDB) CreateTableReturns(result1 *gorm.DB) {
 	fake.CreateTableStub = nil
 	fake.createTableReturns = struct {
 		result1 *gorm.DB
-	}{result1}
-}
-
-func (fake *FakeGormDB) CurrentDatabase() string {
-	fake.currentDatabaseMutex.Lock()
-	fake.currentDatabaseArgsForCall = append(fake.currentDatabaseArgsForCall, struct{}{})
-	fake.currentDatabaseMutex.Unlock()
-	if fake.CurrentDatabaseStub != nil {
-		return fake.CurrentDatabaseStub()
-	} else {
-		return fake.currentDatabaseReturns.result1
-	}
-}
-
-func (fake *FakeGormDB) CurrentDatabaseCallCount() int {
-	fake.currentDatabaseMutex.RLock()
-	defer fake.currentDatabaseMutex.RUnlock()
-	return len(fake.currentDatabaseArgsForCall)
-}
-
-func (fake *FakeGormDB) CurrentDatabaseReturns(result1 string) {
-	fake.CurrentDatabaseStub = nil
-	fake.currentDatabaseReturns = struct {
-		result1 string
 	}{result1}
 }
 
@@ -1544,14 +1553,15 @@ func (fake *FakeGormDB) InstantSetReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
-func (fake *FakeGormDB) Joins(query string) *gorm.DB {
+func (fake *FakeGormDB) Joins(query string, args ...interface{}) *gorm.DB {
 	fake.joinsMutex.Lock()
 	fake.joinsArgsForCall = append(fake.joinsArgsForCall, struct {
 		query string
-	}{query})
+		args  []interface{}
+	}{query, args})
 	fake.joinsMutex.Unlock()
 	if fake.JoinsStub != nil {
-		return fake.JoinsStub(query)
+		return fake.JoinsStub(query, args...)
 	} else {
 		return fake.joinsReturns.result1
 	}
@@ -1563,10 +1573,10 @@ func (fake *FakeGormDB) JoinsCallCount() int {
 	return len(fake.joinsArgsForCall)
 }
 
-func (fake *FakeGormDB) JoinsArgsForCall(i int) string {
+func (fake *FakeGormDB) JoinsArgsForCall(i int) (string, []interface{}) {
 	fake.joinsMutex.RLock()
 	defer fake.joinsMutex.RUnlock()
-	return fake.joinsArgsForCall[i].query
+	return fake.joinsArgsForCall[i].query, fake.joinsArgsForCall[i].args
 }
 
 func (fake *FakeGormDB) JoinsReturns(result1 *gorm.DB) {
@@ -1609,14 +1619,14 @@ func (fake *FakeGormDB) LastReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
-func (fake *FakeGormDB) Limit(value interface{}) *gorm.DB {
+func (fake *FakeGormDB) Limit(limit int) *gorm.DB {
 	fake.limitMutex.Lock()
 	fake.limitArgsForCall = append(fake.limitArgsForCall, struct {
-		value interface{}
-	}{value})
+		limit int
+	}{limit})
 	fake.limitMutex.Unlock()
 	if fake.LimitStub != nil {
-		return fake.LimitStub(value)
+		return fake.LimitStub(limit)
 	} else {
 		return fake.limitReturns.result1
 	}
@@ -1628,10 +1638,10 @@ func (fake *FakeGormDB) LimitCallCount() int {
 	return len(fake.limitArgsForCall)
 }
 
-func (fake *FakeGormDB) LimitArgsForCall(i int) interface{} {
+func (fake *FakeGormDB) LimitArgsForCall(i int) int {
 	fake.limitMutex.RLock()
 	defer fake.limitMutex.RUnlock()
-	return fake.limitArgsForCall[i].value
+	return fake.limitArgsForCall[i].limit
 }
 
 func (fake *FakeGormDB) LimitReturns(result1 *gorm.DB) {
@@ -1859,14 +1869,14 @@ func (fake *FakeGormDB) NotReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
-func (fake *FakeGormDB) Offset(value interface{}) *gorm.DB {
+func (fake *FakeGormDB) Offset(offset int) *gorm.DB {
 	fake.offsetMutex.Lock()
 	fake.offsetArgsForCall = append(fake.offsetArgsForCall, struct {
-		value interface{}
-	}{value})
+		offset int
+	}{offset})
 	fake.offsetMutex.Unlock()
 	if fake.OffsetStub != nil {
-		return fake.OffsetStub(value)
+		return fake.OffsetStub(offset)
 	} else {
 		return fake.offsetReturns.result1
 	}
@@ -1878,10 +1888,10 @@ func (fake *FakeGormDB) OffsetCallCount() int {
 	return len(fake.offsetArgsForCall)
 }
 
-func (fake *FakeGormDB) OffsetArgsForCall(i int) interface{} {
+func (fake *FakeGormDB) OffsetArgsForCall(i int) int {
 	fake.offsetMutex.RLock()
 	defer fake.offsetMutex.RUnlock()
-	return fake.offsetArgsForCall[i].value
+	return fake.offsetArgsForCall[i].offset
 }
 
 func (fake *FakeGormDB) OffsetReturns(result1 *gorm.DB) {
@@ -1986,6 +1996,30 @@ func (fake *FakeGormDB) OrderReturns(result1 *gorm.DB) {
 	fake.OrderStub = nil
 	fake.orderReturns = struct {
 		result1 *gorm.DB
+	}{result1}
+}
+
+func (fake *FakeGormDB) Ping() error {
+	fake.pingMutex.Lock()
+	fake.pingArgsForCall = append(fake.pingArgsForCall, struct{}{})
+	fake.pingMutex.Unlock()
+	if fake.PingStub != nil {
+		return fake.PingStub()
+	} else {
+		return fake.pingReturns.result1
+	}
+}
+
+func (fake *FakeGormDB) PingCallCount() int {
+	fake.pingMutex.RLock()
+	defer fake.pingMutex.RUnlock()
+	return len(fake.pingArgsForCall)
+}
+
+func (fake *FakeGormDB) PingReturns(result1 error) {
+	fake.PingStub = nil
+	fake.pingReturns = struct {
+		result1 error
 	}{result1}
 }
 
@@ -2314,6 +2348,39 @@ func (fake *FakeGormDB) ScanReturns(result1 *gorm.DB) {
 	}{result1}
 }
 
+func (fake *FakeGormDB) ScanRows(rows *sql.Rows, result interface{}) error {
+	fake.scanRowsMutex.Lock()
+	fake.scanRowsArgsForCall = append(fake.scanRowsArgsForCall, struct {
+		rows   *sql.Rows
+		result interface{}
+	}{rows, result})
+	fake.scanRowsMutex.Unlock()
+	if fake.ScanRowsStub != nil {
+		return fake.ScanRowsStub(rows, result)
+	} else {
+		return fake.scanRowsReturns.result1
+	}
+}
+
+func (fake *FakeGormDB) ScanRowsCallCount() int {
+	fake.scanRowsMutex.RLock()
+	defer fake.scanRowsMutex.RUnlock()
+	return len(fake.scanRowsArgsForCall)
+}
+
+func (fake *FakeGormDB) ScanRowsArgsForCall(i int) (*sql.Rows, interface{}) {
+	fake.scanRowsMutex.RLock()
+	defer fake.scanRowsMutex.RUnlock()
+	return fake.scanRowsArgsForCall[i].rows, fake.scanRowsArgsForCall[i].result
+}
+
+func (fake *FakeGormDB) ScanRowsReturns(result1 error) {
+	fake.ScanRowsStub = nil
+	fake.scanRowsReturns = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *FakeGormDB) Scopes(funcs ...func(*gorm.DB) *gorm.DB) *gorm.DB {
 	fake.scopesMutex.Lock()
 	fake.scopesArgsForCall = append(fake.scopesArgsForCall, struct {
@@ -2410,31 +2477,6 @@ func (fake *FakeGormDB) SetReturns(result1 *gorm.DB) {
 	fake.setReturns = struct {
 		result1 *gorm.DB
 	}{result1}
-}
-
-func (fake *FakeGormDB) SetJoinTableHandler(source interface{}, column string, handler gorm.JoinTableHandlerInterface) {
-	fake.setJoinTableHandlerMutex.Lock()
-	fake.setJoinTableHandlerArgsForCall = append(fake.setJoinTableHandlerArgsForCall, struct {
-		source  interface{}
-		column  string
-		handler gorm.JoinTableHandlerInterface
-	}{source, column, handler})
-	fake.setJoinTableHandlerMutex.Unlock()
-	if fake.SetJoinTableHandlerStub != nil {
-		fake.SetJoinTableHandlerStub(source, column, handler)
-	}
-}
-
-func (fake *FakeGormDB) SetJoinTableHandlerCallCount() int {
-	fake.setJoinTableHandlerMutex.RLock()
-	defer fake.setJoinTableHandlerMutex.RUnlock()
-	return len(fake.setJoinTableHandlerArgsForCall)
-}
-
-func (fake *FakeGormDB) SetJoinTableHandlerArgsForCall(i int) (interface{}, string, gorm.JoinTableHandlerInterface) {
-	fake.setJoinTableHandlerMutex.RLock()
-	defer fake.setJoinTableHandlerMutex.RUnlock()
-	return fake.setJoinTableHandlerArgsForCall[i].source, fake.setJoinTableHandlerArgsForCall[i].column, fake.setJoinTableHandlerArgsForCall[i].handler
 }
 
 func (fake *FakeGormDB) SingularTable(enable bool) {
