@@ -1,5 +1,5 @@
-hash: 0b201fa0d951082da549e71db19cbd6b44dafc9e732f330c003171dc5696e826
-updated: 2016-03-10T20:56:35.717289626-05:00
+hash: 7c98152f782567d11d6f6e41e568f30cd2ba6402994c6a3eb30cf924c1d9ccaa
+updated: 2016-03-10T21:50:59.018727193-05:00
 imports:
 - name: github.com/cloudfoundry-community/go-cfenv
   version: b4bebec47a425334d2a076cf99329464c9e611f3
@@ -9,8 +9,6 @@ imports:
   version: 1c83b3eabd45b6d76072b66b746c20815fb2872d
 - name: github.com/gorilla/mux
   version: 26a6070f849969ba72b72256e9f14cf519751690
-- name: github.com/gronpipmaster/mgodb
-  version: 5912458756160bf74e5ef5c5ec4c24c8fbed2ac0
 - name: github.com/jinzhu/gorm
   version: 1819dda80ab0963da3ec38f484264c1cab543786
 - name: github.com/jinzhu/inflection
@@ -58,18 +56,13 @@ imports:
 - name: github.com/robfig/cron
   version: 32d9c273155a0506d27cf73dd1246e86a470997e
 - name: github.com/xchapter7x/chaospeddler
-  version: 54f5e9b32ab195febd914a0a2e0f2b977333e5b3
+  version: 70c57a675a9fab26a1803a50d0e5a469b505ad17
   subpackages:
   - service_broker
 - name: github.com/xchapter7x/cloudcontroller-client
   version: 27896811a22849ade4d3b738fd2d41e8a2b61407
 - name: github.com/xchapter7x/lo
   version: aa2602d0e8e8647f0ce7b53109b37040941915aa
-- name: gopkg.in/mgo.v2
-  version: d90005c5262a3463800497ea5a89aed5fe22c886
-  subpackages:
-  - bson
-  - internal/scram
 - name: gopkg.in/tomb.v2
   version: 14b3d72120e8d10ea6e6b7f87f7175734b1faab8
 devImports: []
