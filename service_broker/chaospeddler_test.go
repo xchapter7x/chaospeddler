@@ -19,7 +19,6 @@ var _ = Describe("Given a ServiceBroker", func() {
 
 	BeforeEach(func() {
 		db = new(fakes.FakeGormDB)
-		db.WhereReturns(db)
 		orch = new(fakes.FakeOrchestrator)
 		orch.DBReturns(db)
 		serviceBroker = &ServiceBroker{
@@ -72,11 +71,10 @@ var _ = Describe("Given a ServiceBroker", func() {
 			It("Then it should save the de-provisioning info", func() {
 				controlInstanceID := "random stuff here"
 				_, err := serviceBroker.Deprovision(controlInstanceID, brokerapi.DeprovisionDetails{}, true)
-				_, args := db.WhereArgsForCall(0)
+				_, args := db.FindArgsForCall(0)
 				Ω(err).ShouldNot(HaveOccurred())
-				Ω(db.WhereCallCount()).Should(Equal(1))
-				Ω(args[0]).Should(Equal(controlInstanceID))
-				Ω(db.FirstCallCount()).Should(Equal(1))
+				Ω(args[1]).Should(Equal(controlInstanceID))
+				Ω(db.FindCallCount()).Should(Equal(1))
 				Ω(db.CreateCallCount()).Should(Equal(1))
 			})
 		})
@@ -103,13 +101,12 @@ var _ = Describe("Given a ServiceBroker", func() {
 				controlInstanceID := "random stuff here"
 				controlBindID := "i bind stuff"
 				err := serviceBroker.Unbind(controlInstanceID, controlBindID, brokerapi.UnbindDetails{})
-				_, args := db.WhereArgsForCall(0)
+				_, args := db.FindArgsForCall(0)
 
 				Ω(err).ShouldNot(HaveOccurred())
-				Ω(db.WhereCallCount()).Should(Equal(1))
-				Ω(args[0]).Should(Equal(controlInstanceID))
-				Ω(args[1]).Should(Equal(controlBindID))
-				Ω(db.FirstCallCount()).Should(Equal(1))
+				Ω(db.FindCallCount()).Should(Equal(1))
+				Ω(args[1]).Should(Equal(controlInstanceID))
+				Ω(args[2]).Should(Equal(controlBindID))
 				Ω(db.CreateCallCount()).Should(Equal(1))
 			})
 		})

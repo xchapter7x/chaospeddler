@@ -66,11 +66,11 @@ func (s *ServiceBroker) save(model interface{}) (err error) {
 }
 
 func (s *ServiceBroker) findOneBinding(instanceID, bindingID string) (serviceBinding ServiceBinding) {
-	s.Orchestrator.DB().Where("instance_id = ? and binding_id = ?", instanceID, bindingID).First(&serviceBinding)
+	s.Orchestrator.DB().Find(&serviceBinding, "instance_id = ? and binding_id = ?", instanceID, bindingID)
 	return
 }
 
 func (s *ServiceBroker) findOneInstance(instanceID string) (serviceInstance ServiceInstance) {
-	s.Orchestrator.DB().Where("instance_id = ?", instanceID).First(&serviceInstance)
+	s.Orchestrator.DB().Find(&serviceInstance, "instance_id = ?", instanceID)
 	return
 }

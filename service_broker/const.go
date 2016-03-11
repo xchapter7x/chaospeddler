@@ -6,8 +6,6 @@ import (
 	"math"
 	"math/rand"
 	"time"
-
-	"github.com/xchapter7x/lo"
 )
 
 //Package constants
@@ -36,10 +34,9 @@ var percentChanceOfTrue = func(i int) bool {
 
 //FindAllMatches - finds all matches for the given arguments
 var FindAllMatches = func(db GormDB, planID, serviceID string) (serviceBindings []ServiceBinding, err error) {
-	db.Where("plan_id = ? and service_id = ?", planID, serviceID).Find(&serviceBindings)
+	db.Find(&serviceBindings, "plan_id = ? and service_id = ?", planID, serviceID)
 
 	if len(serviceBindings) == 0 {
-		lo.G.Debug("errors from db: ", db.GetErrors())
 		err = errors.New(fmt.Sprintf("no plan/serviceid matches found for: PlanID: %s and ServiceID: %s ", planID, serviceID))
 	}
 	return
