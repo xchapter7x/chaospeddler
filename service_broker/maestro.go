@@ -29,9 +29,7 @@ func (s *Maestro) DB() GormDB {
 		}
 	}
 
-	return &GormDBWrapper{
-		DBWrapper: DBWrapper{s.db.New()},
-	}
+	return s.db
 }
 
 //PollCrazyPlans -
