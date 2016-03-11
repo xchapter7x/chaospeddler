@@ -19,16 +19,6 @@ func (s *Maestro) Start() {
 //Db - allows maestro to implement the orachestrator interface, returns the db
 //connection
 func (s *Maestro) DB() GormDB {
-	if err := s.db.DB().Ping(); err != nil {
-		lo.G.Error("dropped db connection, reconnecting now: ", err)
-
-		if s.newDBConnection != nil {
-			s.db = s.newDBConnection()
-		} else {
-			lo.G.Error("sorry no reconnect function defined")
-		}
-	}
-
 	return s.db
 }
 

@@ -39,12 +39,6 @@ type FakeGormDB struct {
 	findReturns struct {
 		result1 *gorm.DB
 	}
-	PingStub        func() error
-	pingMutex       sync.RWMutex
-	pingArgsForCall []struct{}
-	pingReturns     struct {
-		result1 error
-	}
 	SaveStub        func(value interface{}) *gorm.DB
 	saveMutex       sync.RWMutex
 	saveArgsForCall []struct {
@@ -165,30 +159,6 @@ func (fake *FakeGormDB) FindReturns(result1 *gorm.DB) {
 	fake.FindStub = nil
 	fake.findReturns = struct {
 		result1 *gorm.DB
-	}{result1}
-}
-
-func (fake *FakeGormDB) Ping() error {
-	fake.pingMutex.Lock()
-	fake.pingArgsForCall = append(fake.pingArgsForCall, struct{}{})
-	fake.pingMutex.Unlock()
-	if fake.PingStub != nil {
-		return fake.PingStub()
-	} else {
-		return fake.pingReturns.result1
-	}
-}
-
-func (fake *FakeGormDB) PingCallCount() int {
-	fake.pingMutex.RLock()
-	defer fake.pingMutex.RUnlock()
-	return len(fake.pingArgsForCall)
-}
-
-func (fake *FakeGormDB) PingReturns(result1 error) {
-	fake.PingStub = nil
-	fake.pingReturns = struct {
-		result1 error
 	}{result1}
 }
 

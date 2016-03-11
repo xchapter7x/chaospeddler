@@ -65,10 +65,7 @@ func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 			new(chaospeddler.ServiceInstance),
 			new(chaospeddler.ServiceBinding),
 		)
-
-		gormdb = &chaospeddler.GormDBWrapper{
-			DBWrapper: chaospeddler.DBWrapper{db},
-		}
+		gormdb = db
 
 	} else {
 		lo.G.Error("there was an error connecting to mysql: ", err)
