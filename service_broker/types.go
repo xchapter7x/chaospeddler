@@ -18,8 +18,9 @@ type ServiceBroker struct {
 //Maestro - implements the chaosOrchestrater interface for real use in the
 //service
 type Maestro struct {
-	db        GormDB
-	AppKiller AppInstanceKiller
+	newDBConnection func() GormDB
+	db              GormDB
+	AppKiller       AppInstanceKiller
 }
 
 //AppKill - implements AppInstanceKiller to kill apps
