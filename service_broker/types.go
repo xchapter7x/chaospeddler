@@ -97,6 +97,5 @@ type GormDB interface {
 	Create(value interface{}) *gorm.DB
 	DB() *sql.DB
 	Find(out interface{}, where ...interface{}) *gorm.DB
-	Ping() error
 	Save(value interface{}) *gorm.DB
 }
