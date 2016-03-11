@@ -27,6 +27,7 @@ func main() {
 			cloudControllerInfo.LoginURL,
 			cloudControllerInfo.CCURL,
 			sqlConn,
+			ExtractDBSQL,
 		),
 	)
 	chaos.Start()
@@ -43,7 +44,7 @@ func main() {
 //ExtractDBSQL ---
 func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 	var err error
-	var db gorm.DB
+	var db *gorm.DB
 	appEnv, _ := cfenv.Current()
 	service, _ := appEnv.Services.WithName("sql-info")
 	host := fmt.Sprintf("%v", service.Credentials["hostname"])
@@ -66,7 +67,7 @@ func ExtractDBSQL() (gormdb chaospeddler.GormDB) {
 		)
 
 		gormdb = &chaospeddler.GormDBWrapper{
-			DBWrapper: chaospeddler.DBWrapper{&db},
+			DBWrapper: chaospeddler.DBWrapper{db},
 		}
 
 	} else {
