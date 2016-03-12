@@ -34,10 +34,20 @@ var percentChanceOfTrue = func(i int) bool {
 
 //FindAllMatches - finds all matches for the given arguments
 var FindAllMatches = func(db GormDB, planID, serviceID string) (serviceBindings []ServiceBinding, err error) {
-	db.Raw("SELECT * FROM service_binding WHERE plan_id = ? and service_id = ? and deleted_at = '0000-00-00 00:00:00'", planID, serviceID).Scan(&serviceBindings)
+	db.Raw("SELECT * FROM service_binding WHERE plan_id = ? and service_id = ? and deleted_at is NULL", planID, serviceID).Scan(&serviceBindings)
 
 	if len(serviceBindings) == 0 {
 		err = errors.New(fmt.Sprintf("so plan/serviceid matches found for: PlanID: %s and ServiceID: %s ", planID, serviceID))
+	}
+	return
+}
+
+//FindInstanceBindings ---
+var FindInstanceBindings = func(db GormDB, instanceID, bindingID string) (serviceBindings []ServiceBinding, err error) {
+	db.Raw("SELECT * FROM service_binding WHERE instance_id = ? and binding_id = ? and deleted_at is NULL", instanceID, bindingID).Scan(&serviceBindings)
+
+	if len(serviceBindings) == 0 {
+		err = errors.New(fmt.Sprintf("so plan/serviceid matches found for: PlanID: %s and ServiceID: %s ", instanceID, bindingID))
 	}
 	return
 }

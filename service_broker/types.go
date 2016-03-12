@@ -30,12 +30,12 @@ type AppKill struct {
 	CloudControllerAPIURL string
 }
 
-//Model - base model struct for sql
+//Model - base model fields
 type Model struct {
 	ID        uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt time.Time
+	DeletedAt *time.Time
 }
 
 //ServiceInstance - model to persist service instance information

@@ -53,7 +53,7 @@ func (s *ServiceBroker) Bind(instanceID, bindingID string, details brokerapi.Bin
 func (s *ServiceBroker) Unbind(instanceID, bindingID string, details brokerapi.UnbindDetails) error {
 	serviceBinding := s.findOneBinding(instanceID, bindingID)
 	serviceBinding.SetActive(false)
-	err := s.remove(&serviceBinding)
+	err := s.removeBinding(serviceBinding)
 	return err
 }
 
@@ -67,7 +67,15 @@ func (s *ServiceBroker) save(model interface{}) (err error) {
 	return
 }
 
+func (s *ServiceBroker) removeBinding(model ServiceBinding) (err error) {
+	s.Orchestrator.DB().Save(model)
+	s.Orchestrator.DB().Delete(model)
+	lo.G.Debug("deleting binding record: ", model)
+	return
+}
+
 func (s *ServiceBroker) remove(model interface{}) (err error) {
+	s.Orchestrator.DB().Save(model)
 	s.Orchestrator.DB().Delete(model)
 	lo.G.Debug("deleting record: ", model)
 	return
@@ -76,7 +84,7 @@ func (s *ServiceBroker) remove(model interface{}) (err error) {
 func (s *ServiceBroker) findOneBinding(instanceID, bindingID string) (serviceBinding ServiceBinding) {
 	lo.G.Debug("searching for: ", instanceID, bindingID)
 
-	if bindings, err := FindAllMatches(s.Orchestrator.DB(), instanceID, bindingID); err != nil {
+	if bindings, err := FindInstanceBindings(s.Orchestrator.DB(), instanceID, bindingID); err != nil {
 		lo.G.Error("there was an error", err)
 	} else {
 		lo.G.Debug("bindings: ", bindings)

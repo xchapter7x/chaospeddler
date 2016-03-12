@@ -16,7 +16,7 @@ var _ = Describe("Given a ServiceBroker", func() {
 	var bindingProvisioner *fakes.FakeBindingProvisioner
 	var db *fakes.FakeGormDB
 	var orch *fakes.FakeOrchestrator
-	var origFindAllMatches func(GormDB, string, string) ([]ServiceBinding, error)
+	var origFindInstanceBindings func(GormDB, string, string) ([]ServiceBinding, error)
 
 	BeforeEach(func() {
 		db = new(fakes.FakeGormDB)
@@ -37,16 +37,15 @@ var _ = Describe("Given a ServiceBroker", func() {
 			return bindingProvisioner
 		}
 
-		origFindAllMatches = FindAllMatches
-		FindAllMatches = func(g GormDB, i string, b string) ([]ServiceBinding, error) {
+		origFindInstanceBindings = FindInstanceBindings
+		FindInstanceBindings = func(g GormDB, i string, b string) ([]ServiceBinding, error) {
 			return fakes.GenerateQueryResponse(), nil
 		}
 	})
 
 	AfterEach(func() {
 		NewServiceInstance = origNewServiceInstance
-
-		FindAllMatches = origFindAllMatches
+		FindInstanceBindings = origFindInstanceBindings
 	})
 
 	Describe("Given a Provision method", func() {
@@ -84,6 +83,7 @@ var _ = Describe("Given a ServiceBroker", func() {
 				Ω(args[1]).Should(Equal(controlInstanceID))
 				Ω(db.FindCallCount()).Should(Equal(1))
 				Ω(db.DeleteCallCount()).Should(Equal(1))
+				Ω(db.SaveCallCount()).Should(Equal(1))
 			})
 		})
 	})
@@ -111,6 +111,7 @@ var _ = Describe("Given a ServiceBroker", func() {
 				err := serviceBroker.Unbind(controlInstanceID, controlBindID, brokerapi.UnbindDetails{})
 				Ω(err).ShouldNot(HaveOccurred())
 				Ω(db.DeleteCallCount()).Should(Equal(1))
+				Ω(db.SaveCallCount()).Should(Equal(1))
 			})
 		})
 	})
