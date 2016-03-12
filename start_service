@@ -1,0 +1,10 @@
+rm -fR _builds _steps _projects
+isinit=$1
+local="--docker-local"
+echo $isinit
+if [[ "$isinit" == "init" ]]; then
+    echo "pulling latest docker containers"
+    local=""
+fi
+wercker --environment pws-creds.env dev --publish 8080 ${local}
+rm -fR _builds _steps _projects
