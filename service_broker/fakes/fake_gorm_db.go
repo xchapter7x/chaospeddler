@@ -64,6 +64,15 @@ type FakeGormDB struct {
 	scanReturns struct {
 		result1 *gorm.DB
 	}
+	DeleteStub        func(value interface{}, where ...interface{}) *gorm.DB
+	deleteMutex       sync.RWMutex
+	deleteArgsForCall []struct {
+		value interface{}
+		where []interface{}
+	}
+	deleteReturns struct {
+		result1 *gorm.DB
+	}
 }
 
 func (fake *FakeGormDB) Close() error {
@@ -272,6 +281,39 @@ func (fake *FakeGormDB) ScanArgsForCall(i int) interface{} {
 func (fake *FakeGormDB) ScanReturns(result1 *gorm.DB) {
 	fake.ScanStub = nil
 	fake.scanReturns = struct {
+		result1 *gorm.DB
+	}{result1}
+}
+
+func (fake *FakeGormDB) Delete(value interface{}, where ...interface{}) *gorm.DB {
+	fake.deleteMutex.Lock()
+	fake.deleteArgsForCall = append(fake.deleteArgsForCall, struct {
+		value interface{}
+		where []interface{}
+	}{value, where})
+	fake.deleteMutex.Unlock()
+	if fake.DeleteStub != nil {
+		return fake.DeleteStub(value, where...)
+	} else {
+		return fake.deleteReturns.result1
+	}
+}
+
+func (fake *FakeGormDB) DeleteCallCount() int {
+	fake.deleteMutex.RLock()
+	defer fake.deleteMutex.RUnlock()
+	return len(fake.deleteArgsForCall)
+}
+
+func (fake *FakeGormDB) DeleteArgsForCall(i int) (interface{}, []interface{}) {
+	fake.deleteMutex.RLock()
+	defer fake.deleteMutex.RUnlock()
+	return fake.deleteArgsForCall[i].value, fake.deleteArgsForCall[i].where
+}
+
+func (fake *FakeGormDB) DeleteReturns(result1 *gorm.DB) {
+	fake.DeleteStub = nil
+	fake.deleteReturns = struct {
 		result1 *gorm.DB
 	}{result1}
 }

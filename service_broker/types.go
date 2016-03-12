@@ -100,4 +100,5 @@ type GormDB interface {
 	Save(value interface{}) *gorm.DB
 	Raw(sql string, values ...interface{}) *gorm.DB
 	Scan(dest interface{}) *gorm.DB
+	Delete(value interface{}, where ...interface{}) *gorm.DB
 }
