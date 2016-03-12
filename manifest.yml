@@ -1,0 +1,10 @@
+---
+name: chaospeddler 
+path: main
+buildpack: http://github.com/ryandotsmith/null-buildpack.git
+command: ./main
+services:
+- basic-auth-info
+- sql-info
+- cloud-controller-info
+

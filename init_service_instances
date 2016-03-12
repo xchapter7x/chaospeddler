@@ -1,0 +1,11 @@
+clear
+echo "WHAT WOULD YOU LIKE THE BASIC AUTH CREDS FOR YOUR SERVICE BROKER TO BE?\n"
+cf cups basic-auth-info -p "username, password"
+
+clear
+echo "PLEASE INPUT YOUR CLOUD CONTROLLER TARGET INFORMATION?\n"
+cf cups cloud-controller-info -p "username, password, login-url, cc-url"
+
+clear
+echo "WE WILL NOW CREATE YOUR MYSQL SERVICE INSTANCE\n"
+cf create-service p-mysql 100mb-dev sql-info
