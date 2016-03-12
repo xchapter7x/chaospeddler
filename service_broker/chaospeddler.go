@@ -61,7 +61,7 @@ func (s *ServiceBroker) Update(instanceID string, details brokerapi.UpdateDetail
 }
 
 func (s *ServiceBroker) save(model interface{}) (err error) {
-	s.Orchestrator.DB().Create(model)
+	s.Orchestrator.DB().Save(model)
 	return
 }
 
