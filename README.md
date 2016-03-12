@@ -9,8 +9,8 @@
 
 ## How to run tests locally &/or run the service locally
 
-see: local-dev.md
+see: (local-dev.md)
 
 ## How to build and deploy from source
 
-see: local-build-deploy.md
+see: (local-build-deploy.md)
