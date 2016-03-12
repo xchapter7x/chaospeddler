@@ -53,7 +53,7 @@ func (s *ServiceBroker) Bind(instanceID, bindingID string, details brokerapi.Bin
 func (s *ServiceBroker) Unbind(instanceID, bindingID string, details brokerapi.UnbindDetails) error {
 	serviceBinding := s.findOneBinding(instanceID, bindingID)
 	serviceBinding.SetActive(false)
-	err := s.removeBinding(serviceBinding)
+	err := s.remove(serviceBinding)
 	return err
 }
 
@@ -64,13 +64,6 @@ func (s *ServiceBroker) Update(instanceID string, details brokerapi.UpdateDetail
 func (s *ServiceBroker) save(model interface{}) (err error) {
 	s.Orchestrator.DB().Save(model)
 	lo.G.Debug("saving record: ", model)
-	return
-}
-
-func (s *ServiceBroker) removeBinding(model ServiceBinding) (err error) {
-	s.Orchestrator.DB().Save(model)
-	s.Orchestrator.DB().Delete(model)
-	lo.G.Debug("deleting binding record: ", model)
 	return
 }
 
