@@ -47,6 +47,23 @@ type FakeGormDB struct {
 	saveReturns struct {
 		result1 *gorm.DB
 	}
+	RawStub        func(sql string, values ...interface{}) *gorm.DB
+	rawMutex       sync.RWMutex
+	rawArgsForCall []struct {
+		sql    string
+		values []interface{}
+	}
+	rawReturns struct {
+		result1 *gorm.DB
+	}
+	ScanStub        func(dest interface{}) *gorm.DB
+	scanMutex       sync.RWMutex
+	scanArgsForCall []struct {
+		dest interface{}
+	}
+	scanReturns struct {
+		result1 *gorm.DB
+	}
 }
 
 func (fake *FakeGormDB) Close() error {
@@ -190,6 +207,71 @@ func (fake *FakeGormDB) SaveArgsForCall(i int) interface{} {
 func (fake *FakeGormDB) SaveReturns(result1 *gorm.DB) {
 	fake.SaveStub = nil
 	fake.saveReturns = struct {
+		result1 *gorm.DB
+	}{result1}
+}
+
+func (fake *FakeGormDB) Raw(sql string, values ...interface{}) *gorm.DB {
+	fake.rawMutex.Lock()
+	fake.rawArgsForCall = append(fake.rawArgsForCall, struct {
+		sql    string
+		values []interface{}
+	}{sql, values})
+	fake.rawMutex.Unlock()
+	if fake.RawStub != nil {
+		return fake.RawStub(sql, values...)
+	} else {
+		return fake.rawReturns.result1
+	}
+}
+
+func (fake *FakeGormDB) RawCallCount() int {
+	fake.rawMutex.RLock()
+	defer fake.rawMutex.RUnlock()
+	return len(fake.rawArgsForCall)
+}
+
+func (fake *FakeGormDB) RawArgsForCall(i int) (string, []interface{}) {
+	fake.rawMutex.RLock()
+	defer fake.rawMutex.RUnlock()
+	return fake.rawArgsForCall[i].sql, fake.rawArgsForCall[i].values
+}
+
+func (fake *FakeGormDB) RawReturns(result1 *gorm.DB) {
+	fake.RawStub = nil
+	fake.rawReturns = struct {
+		result1 *gorm.DB
+	}{result1}
+}
+
+func (fake *FakeGormDB) Scan(dest interface{}) *gorm.DB {
+	fake.scanMutex.Lock()
+	fake.scanArgsForCall = append(fake.scanArgsForCall, struct {
+		dest interface{}
+	}{dest})
+	fake.scanMutex.Unlock()
+	if fake.ScanStub != nil {
+		return fake.ScanStub(dest)
+	} else {
+		return fake.scanReturns.result1
+	}
+}
+
+func (fake *FakeGormDB) ScanCallCount() int {
+	fake.scanMutex.RLock()
+	defer fake.scanMutex.RUnlock()
+	return len(fake.scanArgsForCall)
+}
+
+func (fake *FakeGormDB) ScanArgsForCall(i int) interface{} {
+	fake.scanMutex.RLock()
+	defer fake.scanMutex.RUnlock()
+	return fake.scanArgsForCall[i].dest
+}
+
+func (fake *FakeGormDB) ScanReturns(result1 *gorm.DB) {
+	fake.ScanStub = nil
+	fake.scanReturns = struct {
 		result1 *gorm.DB
 	}{result1}
 }

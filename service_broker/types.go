@@ -98,4 +98,6 @@ type GormDB interface {
 	DB() *sql.DB
 	Find(out interface{}, where ...interface{}) *gorm.DB
 	Save(value interface{}) *gorm.DB
+	Raw(sql string, values ...interface{}) *gorm.DB
+	Scan(dest interface{}) *gorm.DB
 }
