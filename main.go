@@ -27,7 +27,6 @@ func main() {
 			cloudControllerInfo.LoginURL,
 			cloudControllerInfo.CCURL,
 			sqlConn,
-			ExtractDBSQL,
 		),
 	)
 	chaos.Start()

@@ -32,10 +32,9 @@ func NewAppKill(username, password, loginurl, ccurl string) (a *AppKill) {
 }
 
 //NewMaestro - constructor for a maestro object
-var NewMaestro = func(username, password, loginurl, ccurl string, db GormDB, newDBConnection func() GormDB) (m *Maestro) {
+var NewMaestro = func(username, password, loginurl, ccurl string, db GormDB) (m *Maestro) {
 	m = new(Maestro)
 	m.db = db
-	m.newDBConnection = newDBConnection
 	m.AppKiller = NewAppKill(username, password, loginurl, ccurl)
 	return
 }
