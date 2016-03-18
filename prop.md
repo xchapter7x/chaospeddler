@@ -12,4 +12,26 @@
     *   mickey-mouse - lower frequency of AI killing, w/ lo percentage of total AI count 
     *   off - dont kill stuff
 
-+M@ýüù@÷M@öM@ï[M@î[M@í[M@ë[M@é[M@ç[M@å[M@ã[M@á[M@à[M@ß* perhaps mvp we dont provide a management console we simply make the 4 chaos levels different plans.M@
+perhaps mvp we dont provide a management console we simply make the 4 chaos levels different plans.
+
+---
+
+** app healthcheck service**
+
+- user binds app to service instance
+- user is offered several plans 
+  - healthcheck (pingdom style)
+    - will this need a management console or will service params due?
+
+---
+
+** app attack service**
+
+- user binds app to service instance
+- user is offered several plans 
+  - single 
+    - a small plan offers only single source node attack
+  - multi
+    - a multi plan offers multiple concurrent source node attack
+- user has management console where they can configure attack url, header, body, concurrency, time, etc. 
+  - they can configure multiple attacks per service binding (will each be selected at random, each time or staggered?)
